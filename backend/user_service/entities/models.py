@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import Q
 
 class University(models.Model):
     name = models.CharField(max_length=100)
@@ -63,7 +63,7 @@ class Course(models.Model):
     )
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
     units = models.PositiveIntegerField(default=3)
-    lecturer = models.ManyToManyField("users.User", related_name="courses", blank=True, limit_choices_to={'is_lecturer': True})
+    lecturer = models.ManyToManyField("users.User", related_name="courses", blank=True, limit_choices_to=Q(groups__name="Lecturer"))
 
     def __str__(self):
         return f"{self.code} - {self.name}"
@@ -105,3 +105,7 @@ class TimetableEntry(models.Model):
 
     def __str__(self):
         return f"{self.course.code} | {self.day} | ({self.start_time} - {self.end_time})"
+
+    class Meta:
+        verbose_name = "Timetable Entry"
+        verbose_name_plural = "Timetable Entries"

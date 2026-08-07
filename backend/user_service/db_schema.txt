@@ -14,11 +14,13 @@ University
 ├── Level
 ├── Semester
 └── Timetable
-      ├── Course
-      ├── Lecturer
-      ├── Classroom
-      ├── Level
-      ├── Semester
-      ├── Day
-      ├── Start Time
-      └── End Time
+    │
+    └── TimetableEntry
+        ├── Lecturer
+        ├── Course
+        ├── Classroom
+        ├── Level
+        ├── Semester
+        ├── Day
+        ├── Start Time
+        └── End Time
