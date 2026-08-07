@@ -1,0 +1,35 @@
+MARK
+
+PROJECT PINOUT
+
+Fingerprint: 16(RX), 17(TX) (5v)                                                             | UART
+OLED:                                                                                               | UART
+RTC: G21(SDA); G22(SCL):                                                                | I2C
+SD-card: CS(G5), SCK(G18), MOSI(D23), MISO(D19), VCC, GND:         | SPI
+LTE: Rx(G26)-ESP_TX pin, Tx(G25), GND, V(Ccc)
+
+
+SDA, SCL: I2C
+MISO, MOSI: SPI
+
+
+FINGERPRINT DEVICE FUNCTIONALITY:
+
+On power on:
+-Logo Display
+-Hi, I'm Mark
+-UI loads up: battery bar, network bar, date and time
+
+-Scan to take attendance (default function)
+*if id found, alert "attendance taken"
+*else "user not registered on this device"
+
+-Register user (on button click)
+*prompts for admin fingerprint
+*if id == 1, then admin recognized
+*user can scan fingerprint and get an id back
+*this id is printed to the screen
+*device publishes a message to the topic /register_user via telemetry service (message consists of user_id and machine_id)
+*new user is created on the database with composite key (user_id and machine_id) on user service
+*notification is sent via notification service, so other user fields can be filled on the backend
+

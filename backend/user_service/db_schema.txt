@@ -1,0 +1,24 @@
+##Database Schema Tree
+
+University
+│
+├── School
+│   ├── Department
+│   │   ├── Lecturer
+│   │   ├── Student
+│   │   └── Course
+│   │
+│   └── ...
+│
+├── Classroom
+├── Level
+├── Semester
+└── Timetable
+      ├── Course
+      ├── Lecturer
+      ├── Classroom
+      ├── Level
+      ├── Semester
+      ├── Day
+      ├── Start Time
+      └── End Time
