@@ -24,3 +24,6 @@ University
         ├── Day
         ├── Start Time
         └── End Time
+Attendance app
+fingerprint object with field: id, (mapped to every students reg number, servers as serial number)
+attendance object mapped to every time table TimetableEntry(TimetableEntry will have number of classes which will be count down after every class OR we just increment number of times attended, then .average method returns percentage attendance)

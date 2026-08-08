@@ -10,7 +10,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     from entities.models import Department, Level
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
-    user_name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
     firstname = models.CharField(max_length=255, blank=True, null=True)
     lastname = models.CharField(max_length=255, blank=True, null=True)
     middlename = models.CharField(max_length=255, blank=True, null=True)
@@ -22,7 +22,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     reg_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
-    is_student = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
@@ -41,6 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     def tokens(self):
         refresh = RefreshToken.for_user(self)
         return {
-            'refresh': str(refresh),
-            'access': str(refresh.access_token)
+            'access_token': str(refresh.access_token),
+            'refresh_token': str(refresh),    
         }
