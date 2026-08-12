@@ -9,10 +9,16 @@ dependencies = [
     "djangorestframework>=3.17.1",
     "djangorestframework-simplejwt>=5.5.1",
     "gunicorn>=26.0.0",
+    "inflection>=0.5.1",
     "python-dotenv>=1.2.2",
+    "pyyaml>=6.0.3",
+    "uritemplate>=4.2.0",
 ]
 
 [dependency-groups]
 dev = [
-    "fcntl",
+    "django-extensions>=4.1",
+    "graphviz>=0.21",
+    "pydotplus>=2.0.2",
 ]
+

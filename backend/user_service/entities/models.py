@@ -134,13 +134,9 @@ class TimetableEntry(models.Model):
         ("FRI", "Friday"),
     ]
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="timetable_entries")
-    lecturer = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="timetable_entries", limit_choices_to=Q(groups__name="Lecturer"))
-    hall = models.ForeignKey("entities.Hall", on_delete=models.CASCADE)
     day = models.CharField(max_length=3, choices=DAYS, null=True, blank=True)
-    date = models.DateField(null=True, blank=True)
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
-
     timetable = models.ForeignKey(Timetable, on_delete=models.CASCADE, related_name="timetable_entries")
 
     def __str__(self):
@@ -149,6 +145,37 @@ class TimetableEntry(models.Model):
     class Meta:
         verbose_name = "Timetable Entry"
         verbose_name_plural = "Timetable Entries"
+        constraints = [
+                        models.UniqueConstraint(
+                            fields=[
+                                "timetable",
+                                "course",
+                                "day",
+                                "start_time",
+                                "end_time",
+                            ],
+                            name="unique_timetable_entry",
+                        ),
+                    ]
+
+class TimetableEntrySchedule(models.Model):
+    timetable_entry = models.ForeignKey(TimetableEntry, on_delete=models.CASCADE, related_name="timetable_entry_schedules")
+    date = models.DateField()
+    lecturer = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="timetable_entries", limit_choices_to=Q(groups__name="Lecturer"))
+    hall = models.ForeignKey("entities.Hall", on_delete=models.CASCADE)
+    attendance_taken = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.timetable_entry.course.code} | {self.date} | ({self.timetable_entry.start_time} - {self.timetable_entry.end_time})"
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["timetable_entry", "date"],
+                name="unique_timetable_entry_schedule"
+            )
+        ]
+            
 
 class Hall(models.Model):
     name = models.CharField(max_length=50)

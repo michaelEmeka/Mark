@@ -17,16 +17,49 @@ class HardwareNode(models.Model):
 
 
 class Attendance(models.Model):
-    # Define the fields for the Attendance model
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='attendances', limit_choices_to=Q(groups__name="Student"))
-    timetable_entry = models.ForeignKey('entities.TimetableEntry', on_delete=models.CASCADE, related_name='attendances')
+    user = models.ForeignKey(
+        'users.User',
+        on_delete=models.CASCADE,
+        related_name='attendances',
+        limit_choices_to=Q(groups__name="Student")
+    )
+
+    timetable_entry_schedule = models.ForeignKey(
+        'entities.TimetableEntrySchedule',
+        on_delete=models.CASCADE,
+        related_name='attendances'
+    )
+
+    date_taken = models.DateField(auto_now_add=True)
+    time_in = models.TimeField()
     is_present = models.BooleanField(default=False)
-    datetime_in = models.DateTimeField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'timetable_entry_schedule'],
+                name='unique_student_attendance_per_schedule'
+            )
+        ]
 
     def __str__(self):
-        return f"{self.timetable_entry.course.code} Attendance for - {self.user.lastname} {self.user.firstname}: {'Present' if self.is_present else 'Absent'}"
-    
+        status = "Present" if self.is_present else "Absent"
+
+        return (
+            f"{self.timetable_entry_schedule.timetable_entry.course.code} "
+            f"Attendance for - "
+            f"{self.user.lastname} {self.user.firstname}: {status}"
+        )
+
     def mark_attendance(self):
-        self.is_present = True if self.datetime_in >= self.timetable_entry.start_datetime and self.datetime_in <= self.timetable_entry.end_datetime else False
-        self.save()
+        timetable_entry = self.timetable_entry_schedule.timetable_entry
+
+        self.is_present = (
+            timetable_entry.start_time
+            <= self.time_in
+            <= timetable_entry.end_time
+        )
+
+        self.save(update_fields=['is_present'])
+
         return self.is_present

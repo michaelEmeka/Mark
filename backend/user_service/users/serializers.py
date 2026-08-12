@@ -4,7 +4,7 @@ from .models import User
 class ListUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "user_name", "push_token", "preferences", "created_at"]
+        fields = ["id", "email", "username", "push_token", "preferences", "created_at"]
 
 from django.contrib.auth.models import Group
 from rest_framework import serializers
