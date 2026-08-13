@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'users',
     'entities',
     'attendance',
-    "django_extensions",
+    'mqtt',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -146,3 +147,9 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+AWS_IOT_ENDPOINT = os.getenv("AWS_IOT_ENDPOINT")
+AWS_IOT_CERTIFICATE_PATH = os.getenv("AWS_IOT_CERTIFICATE_PATH")
+AWS_IOT_PRIVATE_KEY_PATH = os.getenv("AWS_IOT_PRIVATE_KEY_PATH")
+AWS_IOT_ROOT_CA_PATH = os.getenv("AWS_IOT_ROOT_CA_PATH")
+MQTT_CLIENT_ID = os.getenv("MQTT_CLIENT_ID")
+AWS_IOT_ENDPOINT = os.getenv("AWS_IOT_ENDPOINT")
