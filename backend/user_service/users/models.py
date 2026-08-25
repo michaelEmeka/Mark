@@ -5,12 +5,13 @@ from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenRefreshView
 # from django.utils.translation import gettext_lazy as _
+from attendance.models import HardwareNode
 
 class User(AbstractBaseUser, PermissionsMixin):
     from entities.models import Department, Level
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
-    username = models.CharField(max_length=255)
+    user_name = models.CharField(max_length=255)
     firstname = models.CharField(max_length=255, blank=True, null=True)
     lastname = models.CharField(max_length=255, blank=True, null=True)
     middlename = models.CharField(max_length=255, blank=True, null=True)
@@ -22,6 +23,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     reg_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
     department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
+    set = models.ForeignKey("entities.Set", on_delete=models.CASCADE, null=True, blank=True)
 
     objects = CustomUserManager()
 
@@ -41,5 +43,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         refresh = RefreshToken.for_user(self)
         return {
             'access_token': str(refresh.access_token),
-            'refresh_token': str(refresh),    
+            'refresh_token': str(refresh),
         }
+
+# class Fingerprint(models.Model):
+#     fingerprint_id = models.PositiveIntegerField();
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+#     machine = models.ForeignKey(HardwareNode, on_delete=models.SET_NULL)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)

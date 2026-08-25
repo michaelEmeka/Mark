@@ -3,7 +3,7 @@ from django.db.models import Q
 from django.core.validators import MinValueValidator, MaxValueValidator
 
 class University(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     code = models.CharField(max_length=10, unique=True)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=50)
@@ -18,8 +18,8 @@ class University(models.Model):
             return self.name
 
 class School(models.Model):
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10, null=True, blank=True)
+    name = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=10, unique=True, null=True, blank=True)
     address = models.CharField(max_length=200)
     university = models.ForeignKey(University, on_delete=models.CASCADE, related_name='schools')
 
@@ -27,8 +27,8 @@ class School(models.Model):
         return self.name
 
 class Department(models.Model):
-    name = models.CharField(max_length=100)
-    code = models.CharField(max_length=10, null=True, blank=True)
+    name = models.CharField(max_length=100, unique=True)
+    code = models.CharField(max_length=10, unique=True, null=True, blank=True)
     school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='departments')
 
     def __str__(self):
@@ -38,6 +38,7 @@ class Set(models.Model):
     start_year = models.PositiveIntegerField()
     end_year = models.PositiveIntegerField()
     department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='sets')
+    timetable = models.OneToOneField("entities.Timetable", on_delete=models.CASCADE, related_name="set", null=True, blank=True)
 
     def __str__(self):
         return f"{self.department.code} - {self.start_year}/{self.end_year}"

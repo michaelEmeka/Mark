@@ -3,7 +3,7 @@ MARK
 PROJECT PINOUT
 
 Fingerprint: 16(RX), 17(TX) (5v)                                                             | UART
-OLED:                                                                                               | UART
+OLED: G21(SDA); G22(SCL)                                                               | I2C
 RTC: G21(SDA); G22(SCL):                                                                | I2C
 SD-card: CS(G5), SCK(G18), MOSI(D23), MISO(D19), VCC, GND:         | SPI
 LTE: Rx(G26)-ESP_TX pin, Tx(G25), GND, V(Ccc)
@@ -33,3 +33,11 @@ On power on:
 *new user is created on the database with composite key (user_id and machine_id) on user service
 *notification is sent via notification service, so other user fields can be filled on the backend
 
+
+Saved states:
+Fingerprint status(scanning, identified, registered etc) - Device displays everything sent via queue briefly then falls back to current fingerprint status
+LTE status(connected and not connected, network bar) - Device displays network bar fixed, and network status based on event
+Firmware Update status - Device displays update status based on event and holds everything else, though gives option to postpone/cancel update
+
+
+L3: 2k

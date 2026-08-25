@@ -3,9 +3,9 @@ from django.db.models import Q
 from entities.models import School, Department, TimetableEntry
 
 class HardwareNode(models.Model):
-    name = models.CharField(max_length=100, default="university.name-school.name-department.name-Node")
-    serial_number = models.CharField(max_length=100, unique=True)
-    location = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default="University-name_School-name_Department-name_Device-id", unique=True)
+    serial_number = models.CharField(max_length=100)
+    location = models.CharField(max_length=100) #GPS coordinates
     is_active = models.BooleanField(default=True)
     department = models.ForeignKey('entities.Department', on_delete=models.CASCADE, related_name='hardware_nodes')
     school = models.ForeignKey('entities.School', on_delete=models.CASCADE, related_name='hardware_nodes', null=True, blank=True)
