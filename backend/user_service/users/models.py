@@ -11,7 +11,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     from entities.models import Department, Level
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
-    user_name = models.CharField(max_length=255)
+    username = models.CharField(max_length=255)
     firstname = models.CharField(max_length=255, blank=True, null=True)
     lastname = models.CharField(max_length=255, blank=True, null=True)
     middlename = models.CharField(max_length=255, blank=True, null=True)
