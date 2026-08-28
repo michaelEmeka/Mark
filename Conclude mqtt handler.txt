@@ -1,0 +1,4 @@
+Conclude mqtt handler
+Test on model creation
+
+if time permits... AWS Iam instead, then hosting

@@ -48,10 +48,12 @@ class LoginUserView(APIView):
 
 class LogoutUserView(APIView):
     def post(self, request):
-        refresh_token = request.data.get("refresh_token")
-        token = RefreshToken(refresh_token)
-        token.blacklist()
-
+        refresh = request.data.get("refresh")
+        try:
+            token = RefreshToken(refresh)
+            token.blacklist()
+        except Exception as e:
+            raise e
         return Response({"message": "Logged out"})
 
 
@@ -60,28 +62,20 @@ class GetUserView(GenericAPIView):
     serializer_class = UserDetailSerializer
 
     def get(self, request):
-        user = User(email=request.user)
-        serializer = self.serializer_class(user)
-
+        serializer = self.get_serializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# class UpdateUserView(GenericAPIView):
-#     queryset = User.objects.all()
-#     serializer_class = UpdateUserSerializer
+class UpdateUserView(GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UpdateUserSerializer
 
-#     def get(self, request, *args, **kwargs):
-#         #returns user object
-#         email = self.kwargs.get("email")
-#         try:
-#             user = User.objects.get(email=email)
-#         except User.DoesNotExist:
-#             return Response({"error": f"User {email} does not exist"})
-        
-#         return Response()
-
-#     def patch(self):
-
+    def patch(self, request):
+        serializer = self.get_serializer(request.user, data=request.data, context={"user": request.user})
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.save()
+            return Response({"message": f"User {user.email} updated successfully"}, status=status.HTTP_201_CREATED)
+        return Response({"message": f"Could not update User {instance.email}.."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 # class DeleteUserView(DestroyAPIView):
 #     queryset = User.objects.all()
 #     serializer_class = DeleteUserSerializer

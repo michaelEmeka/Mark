@@ -56,7 +56,7 @@ class Level(models.Model):
         validators=[
         MinValueValidator(100),
         MaxValueValidator(600),
-    ])
+    ], unique=True)
 
     def __str__(self):
         return str(self.code) + " Level"
@@ -127,6 +127,13 @@ class Timetable(models.Model):
         return f"{self.department.name} | {self.level.__str__()} | {self.semester.name}"
 
 class TimetableEntry(models.Model):
+    """
+    TimetableEntry model. This represents a single entry on the timetable
+
+    is_one_time: indicates if the timetableentry is temporary. It is relevant to generate
+    timetableentryschedule for imporomptu class. If true it doesn't show up as timetableentry
+    in user dashboard
+    """
     DAYS = [
         ("MON", "Monday"),
         ("TUE", "Tuesday"),
@@ -139,6 +146,7 @@ class TimetableEntry(models.Model):
     start_time = models.TimeField(null=True, blank=True)
     end_time = models.TimeField(null=True, blank=True)
     timetable = models.ForeignKey(Timetable, on_delete=models.CASCADE, related_name="timetable_entries")
+    is_one_time = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.course.code} | {self.day} | ({self.start_time} - {self.end_time})"

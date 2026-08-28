@@ -1,0 +1,109 @@
+ToDo
+
+Power Electronics12-2am
+AWS AI challenge (till chapter X) 10-12am
+Electronics (Chizzy's project lookup, breaking down subsystems and planning building them) 2-4:00am
+Purchasing(Roundup victor's, mine, and Chizzy's hub360 purchase) - 6-7:00am
+
+
+Tomorrow: Coursera cont'd (morning till 12)
+esp32-s3 on platform.io, model deployment with tf.lite (12 - 3)
+Design LED colorwheel pcb (3-6pm)
+
+..... today at least 1hr reading 
+Look up Websockets/MQQT in-depth
+lookup async too
+AWS AI Challenge (1 lesson)
+
+
+----------------------------------------------------------------------
+
+-Edit plan
+-Change methodology
+-Update bill of quantities
+-Update statistics
+
+-Evening:
+Custing and buying Chizzy stuff from hub 360
+
+
+Bill of Quantities
+MQTT vs Websockets
+
+
+The Strategist: Talks about the money, how do we make money, how do we shape the revenue model, the pricing, marketing, distribution, how do we get customers how do we scale
+the researcher: does the market research and customer research bringing a lot of insight into the team
+
+The builder: A product manager or the tech prerson in the team, turns idea into a working prototype or product
+
+the storyteller: sells, he can pitch, he can present, he can communicate
+
+the coordinator: coordinates the team, keeping everyone coordinated and working together, keeping everybody in touch
+
+
+
+Concept Note: A well structured, detailed and well formatted document. It contains the problem statement, and how you'll implement it
+
+Team Story: Your team story and personal statement: communicator, ensuring we all are quite connected to the team and what we are building
+
+A pitch deck built on canva: build a pitch deck well designed, formatted, not so much information. Standard information
+
+A Short story Video pitching your idea, story behind the idea, what inspired it, who its for etc
+
+Structure, Excellently done
+
+
+TIPS FOR A STRONG APPLICATION
+-Solve a real problem: target a genuine pain point real people face
+-Be Specific and Practical: show exacly how it works not just the idea
+-Show Originality: show personality in building pitch deck, design, personal story connecting to the team story and to the personal statement
+-Use Gemini Meaningfully: let AI sharpen your solution, not replace your thinking 
+
+
+The CGPA is an aggregate of the ream members CGPA
+
+
+Concept note, what is needed etc
+
+Concept note
+How do we plan to scale
+How we plan to make money
+who are the target audience
+
+Pitch deck:
+should contain future plans
+
+prototype submission: any format - something they can access - they click on the link and it takes them to what we are building
+
+Originality: 
+-Must solve a real problem
+-Use AI smartly, let it be your idea, own it even if you used AI
+
+formats: everything pdf except, then
+
+Team story: coming together from different background, depts, forming a story around dat and tilting it down to our solution, finding our similarities, and backgrounds and how it aligns to what we're building. e.g. arsenal forming a story around winning the champions league after 6years
+
+
+We don't all have to be in the video, creativity, originality should play out.
+
+Personal Story the individual
+Team Story(pdf), add pictures, and LinkedIn etc to give more personality
+
+Concept note: contains Granular details - business model, numbers, formulas, how we plan to scale
+Pitch deck: gives a summary, graphics, charts, models, models of marketing or distributions in bullet points, 
+
+Concept note, pich deck, team story and presentation(video)
+
+make sure the submitted folder can be viewed from incognito
+
+
+ToDo
+Good presentation
+Possible prototype
+
+Good presentation
+-concept note, pitch deck, team story, video(friday/saturday)
+-
+
+Paris 
+form submission: 

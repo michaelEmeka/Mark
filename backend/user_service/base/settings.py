@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'attendance',
     'mqtt',
     'django_extensions',
+    'utils'
 ]
 
 MIDDLEWARE = [
@@ -136,7 +137,8 @@ AUTH_USER_MODEL = "users.User"
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    "EXCEPTION_HANDLER": "utils.exceptions.custom_exception_handler",
 }
 
 
@@ -147,6 +149,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
 AWS_IOT_ENDPOINT = os.getenv("AWS_IOT_ENDPOINT")
 AWS_IOT_CERTIFICATE_PATH = os.getenv("AWS_IOT_CERTIFICATE_PATH")
 AWS_IOT_PRIVATE_KEY_PATH = os.getenv("AWS_IOT_PRIVATE_KEY_PATH")

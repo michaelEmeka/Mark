@@ -11,24 +11,23 @@ class User(AbstractBaseUser, PermissionsMixin):
     from entities.models import Department, Level
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
-    username = models.CharField(max_length=255)
-    firstname = models.CharField(max_length=255, blank=True, null=True)
-    lastname = models.CharField(max_length=255, blank=True, null=True)
+    username = models.CharField(max_length=255, blank=True, null=True, default="")
+    firstname = models.CharField(max_length=255)
+    lastname = models.CharField(max_length=255)
     middlename = models.CharField(max_length=255, blank=True, null=True)
     push_token = models.CharField(max_length=500, blank=True, null=True)
     preferences = models.JSONField(default=dict, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     reg_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
     set = models.ForeignKey("entities.Set", on_delete=models.CASCADE, null=True, blank=True)
-
+    
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name']
+    #REQUIRED_FIELDS = ['email']
     
     #authorization and authentication
     is_staff = models.BooleanField(default=False)
@@ -42,8 +41,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     def tokens(self):
         refresh = RefreshToken.for_user(self)
         return {
-            'access_token': str(refresh.access_token),
-            'refresh_token': str(refresh),
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
         }
 
 # class Fingerprint(models.Model):
