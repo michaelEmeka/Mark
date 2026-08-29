@@ -11,6 +11,7 @@ from .serializers import *
 
 
 class ListUsersView(ListAPIView):
+    permission_classes = [IsAdminUser]
     queryset = User.objects.all()
     serializer_class = ListUsersSerializer
 
@@ -67,8 +68,9 @@ class GetUserView(GenericAPIView):
 
 
 class UpdateUserView(GenericAPIView):
-    queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
     serializer_class = UpdateUserSerializer
+    queryset = User.objects.all()
 
     def patch(self, request):
         serializer = self.get_serializer(request.user, data=request.data, context={"user": request.user})

@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models import Q
 from django.core.validators import MinValueValidator, MaxValueValidator
+from datetime import datetime
+
 
 class University(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -177,6 +179,15 @@ class TimetableEntrySchedule(models.Model):
     def __str__(self):
         return f"{self.timetable_entry.course.code} | {self.date} | ({self.timetable_entry.start_time} - {self.timetable_entry.end_time})"
 
+    def map_date_to_day(self):
+        date_str = str(self.date)  # YYYY-MM-DD format
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        day_name = date_obj.strftime("%A")  # Full day name (e.g., Friday)
+        return day_name
+
+    def is_past(self):
+        return self.date < datetime.now().date()
+    
     class Meta:
         constraints = [
             models.UniqueConstraint(

@@ -13,4 +13,4 @@ env
 venv
 
 # Database
-db.sqlite3
+.sqlite3

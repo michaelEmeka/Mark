@@ -8,7 +8,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from attendance.models import HardwareNode
 
 class User(AbstractBaseUser, PermissionsMixin):
-    from entities.models import Department, Level
+    from entities.models import Department, Level, Set
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
     username = models.CharField(max_length=255, blank=True, null=True, default="")
@@ -23,7 +23,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
     set = models.ForeignKey("entities.Set", on_delete=models.CASCADE, null=True, blank=True)
-    
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'email'
