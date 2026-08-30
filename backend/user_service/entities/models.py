@@ -106,11 +106,13 @@ class Course(models.Model):
     department = models.ManyToManyField(
         Department,
         related_name="courses"
-    )
+    )#many_to_many due to general courses offered at lower level
+    #school = 
     level = models.ManyToManyField(Level, related_name="courses")
     units = models.PositiveIntegerField(default=3)
     lecturer = models.ManyToManyField("users.User", related_name="courses", blank=True, limit_choices_to=Q(groups__name="Lecturer"))
-
+    ##Course should rather have school not department
+    ##
     def __str__(self):
         return f"{self.code} - {self.name}"
 
@@ -175,7 +177,9 @@ class TimetableEntrySchedule(models.Model):
     lecturer = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="timetable_entries", limit_choices_to=Q(groups__name="Lecturer"))
     hall = models.ForeignKey("entities.Hall", on_delete=models.CASCADE)
     attendance_taken = models.BooleanField(default=False)
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
     def __str__(self):
         return f"{self.timetable_entry.course.code} | {self.date} | ({self.timetable_entry.start_time} - {self.timetable_entry.end_time})"
 
