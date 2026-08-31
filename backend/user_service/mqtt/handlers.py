@@ -1,9 +1,9 @@
 import json
 from attendance.services.fingerprint_processor import (
     process_fingerprint_scan,
-    process_device_status)
+    process_fingerprint_enrollment)
 
-def handle_message(topic, payload):
+def mqtt_message_handler(topic, payload):
     """
     Possible Payload Samples
     {
@@ -35,13 +35,13 @@ def handle_message(topic, payload):
     _, _, thing_name, message_type = topic_parts
 
     if message_type == "events":
-        handle_event(
+        process_fingerprint_scan(
             device_name=thing_name,
             data=data,
         )
 
     elif message_type == "status":
-        handle_status(
+        process_fingerprint_enrollment(
             device_name=thing_name,
             data=data,
         )
@@ -50,7 +50,7 @@ def handle_message(topic, payload):
         print(f"Does not Subscribe/Receive from this topic: {message_type}")
 
 
-def handle_event(device_name, data):
+def mqtt_event_handler(device_name, data):
     #device_name: unique thing_name from topic
     #data: payload message
     """
@@ -80,5 +80,5 @@ def handle_event(device_name, data):
 
     process_fingerprint_scan(device_name=device_name, data=data)
 
-def handle_status(device_name, data):
+def mqtt_status_handler(device_name, data):
     process_device_status(device_name=device_name, data=data)

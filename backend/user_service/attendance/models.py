@@ -4,16 +4,32 @@ from entities.models import School, Department, TimetableEntry
 
 class HardwareNode(models.Model):
     name = models.CharField(max_length=100, default="University-name_School-name_Department-name_Device-id", unique=True)
-    serial_number = models.CharField(max_length=100)
-    location = models.CharField(max_length=100) #GPS coordinates
+    set = models.ForeignKey("entities.Set", on_delete=models.CASCADE, related_name="hardware_nodes")
+    location = models.CharField(max_length=100, null=True, blank=True)  # GPS coordinates
     is_active = models.BooleanField(default=True)
-    department = models.ForeignKey('entities.Department', on_delete=models.CASCADE, related_name='hardware_nodes')
-    school = models.ForeignKey('entities.School', on_delete=models.CASCADE, related_name='hardware_nodes', null=True, blank=True)
-    university = models.ForeignKey('entities.University', on_delete=models.CASCADE, related_name='hardware_nodes', null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name} - {self.serial_number}"
+        return self.name
     
+
+class FingerprintStamp(models.Model):
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="fingerprint_stamps")
+    hardware_node = models.ForeignKey(HardwareNode, on_delete=models.CASCADE, related_name="fingerprint_stamps")
+    fingerprint_id = models.PositiveIntegerField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["hardware_node", "fingerprint_id"],
+                name="unique_fingerprint_per_hardware_node",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "hardware_node"],
+                name="unique_user_fingerprint_per_hardware_node",
+            ),
+        ]
+    def __str__(self):
+        return self.user.email
 
 
 class Attendance(models.Model):
