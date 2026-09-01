@@ -7,10 +7,11 @@ def mqtt_message_handler(topic, payload):
     """
     Possible Payload Samples
     {
-        "status_type": "online",
+        "state_type": "online",
         "timestamp": "2026-08-14T20:30:00Z"
     }
     {
+        "event_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         "event_type": "fingerprint_scan",
         "finger_id": 42,
         "timestamp": "2026-08-14T20:30:00Z"
@@ -77,8 +78,6 @@ def mqtt_event_handler(device_name, data):
     if (not timestamp or not isinstance(timestamp, str)):
         print("Invalid timestamp")
         return
-
-    process_fingerprint_scan(device_name=device_name, data=data)
-
+    
 def mqtt_status_handler(device_name, data):
     process_device_status(device_name=device_name, data=data)

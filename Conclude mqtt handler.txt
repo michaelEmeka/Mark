@@ -2,3 +2,13 @@ Conclude mqtt handler
 Test on model creation
 
 if time permits... AWS Iam instead, then hosting
+
+-Currently Implementing process_fingerprint_status
+
+-Then implement fingerprint enrollment, then fingerprint deletion in future
+
+-Then integrate with hardware tonight
+
+-then deploy tomorrow on AWS
+
+-then start working on dashboard

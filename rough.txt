@@ -1,0 +1,70 @@
+<page/>
+
+Endpoints:
+Views:
+
+Website Facing
+
+Auth:
+Signup, Logout, Logout, Refresh_token
+
+User:
+CreateUser - Signup user
+GetUser - Returns user details to populate <dashboard/>
+UpdateUser - PUT or PATCH user from <user profile/>
+Refresh_token
+
+Classes:
+ScheduleClass - create a timetableentryschedule <create schedule/> {permission: courserep}
+
+Preferences/Settings:
+<user profile/>
+>>Edit profile:-
+*loads currently logged in user detail in the form
+*accepts patch details via the form (same fields as signup input)
+>>Preferences:-
+*push-notifications (toggle button)
+*email-notifications (toggle button)
+*dark-mode (toggle button)
+>>Automation:-
+*auto-role timetable weekly {permission: courserep}
+
+Dashboard:
+Hi, Name
+Timetable for the week, with timetable entries/scheduled classes
+Attendance Percentage so far
+Probability of failure (and other inferences)
+--buttom: recent activity: classes attended, classes missed (updated via db initially and websockets subsequently)
+Navigation buttons
+
+
+
+MQTT Facing
+Attendance:
+CreateAttendance - create attendance record for a particular user for a particular class
+AcknowledgeAttendance - sends back attendance creation success back to the fingerprint device
+
+
+
+For timetable
+Every department set has a fixed timetable
+the timetable is populated by timetableentry(they own the day field)
+timetableentries are activated by timetableentryschedules(they own the date field)
+
+timetableentryschedules are:
+dynamic
+they have a time_table_entry field
+the time_table_entry field is either one_time or not... one_time is used for impromptu schedules and not one_time is used for automated population of entries
+they get automatically created from timetableentries by scheduled tasks
+they can also be created by individually
+this makes timetableentry just a helper model for
+	-timetableentryschedule generation automation and
+	-dashboard viewing
+6.	So on dashboard: timetableentries get shown, and timetableschedule highlight them, so they're both obtained separately
+
+
+
+attendance:
+roundup mqtt transmission this evening
+
+view schedules, create schedules, mark attendance
