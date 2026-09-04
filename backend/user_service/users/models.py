@@ -20,7 +20,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     reg_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
     set = models.ForeignKey("entities.Set", on_delete=models.CASCADE, null=True, blank=True)
     objects = CustomUserManager()

@@ -13,7 +13,7 @@ def mqtt_message_handler(topic, payload):
     {
         "event_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
         "event_type": "fingerprint_scan",
-        "finger_id": 42,
+        "fingerprint_id": 1,
         "timestamp": "2026-08-14T20:30:00Z"
     }
     """

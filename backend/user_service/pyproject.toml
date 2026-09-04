@@ -6,12 +6,14 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "awsiotsdk>=1.31.0",
+    "dj-database-url>=2.3.0",
     "django>=6.0.7",
     "djangorestframework>=3.17.1",
     "djangorestframework-simplejwt>=5.5.1",
     "gunicorn>=26.0.0",
     "inflection>=0.5.1",
     "pika>=1.4.4",
+    "psycopg2-binary>=2.9.12",
     "python-dotenv>=1.2.2",
     "pyyaml>=6.0.3",
     "uritemplate>=4.2.0",

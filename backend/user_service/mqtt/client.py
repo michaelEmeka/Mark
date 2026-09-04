@@ -27,10 +27,12 @@ class MQTTWorker:
         print(connect_future.result())
         print("Connected to AWS IoT successfully")
 
+    def on_disconnect(self, **kwargs):
+        print("Disconnected from AWS IoT")
+        # Reconnect logic can be implemented here if needed
+        
     def on_message(self, topic, payload, **kwargs):
         print("\nMessage received!")
-        #print("Topic: ", topic)
-        #print("Payload: ", payload.decode("utf-8"))
         mqtt_message_handler(topic=topic, payload=payload)
 
     def publish(self, topic, payload):
