@@ -1,7 +1,8 @@
-from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 from django.db import transaction
-from .models import TimetableEntrySchedule, TimetableEntry, Course, Timetable
+from rest_framework import serializers
+
+from .models import Course, Timetable, TimetableEntry, TimetableEntrySchedule
+
 
 class GetTimetableEntryScheduleSerializer(serializers.ModelSerializer):
     course_name = serializers.CharField(source="timetable_entry.course.name", read_only=True)

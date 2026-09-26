@@ -1,7 +1,10 @@
 import json
+
 from attendance.services.fingerprint_processor import (
+    process_fingerprint_enrollment,
     process_fingerprint_scan,
-    process_fingerprint_enrollment)
+)
+
 
 def mqtt_message_handler(topic, payload):
     """
@@ -80,4 +83,5 @@ def mqtt_event_handler(device_name, data):
         return
     
 def mqtt_status_handler(device_name, data):
-    process_device_status(device_name=device_name, data=data)
+    #process_device_status(device_name=device_name, data=data)
+    return

@@ -1,8 +1,10 @@
 ##PRODUCER FOR API SIDE
 ##Exports a helper->instance of RabbitMQProducer
 import json
+
 import pika
 from django.conf import settings
+
 
 class RabbitMQProducer:
     def __init__(self):

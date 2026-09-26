@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from .models import Attendance
+
 
 class ListUserAttendanceSerilaizer(serializers.ModelSerializer):
     course = serializers.JSONField(read_only=True)

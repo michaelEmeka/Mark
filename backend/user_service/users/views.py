@@ -1,13 +1,16 @@
-from users.models import User
-from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.generics import GenericAPIView, CreateAPIView, ListAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import (
+    GenericAPIView,
+    ListAPIView,
+)
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import *
 
+from users.models import User
+
+from .serializers import *
 
 
 class ListUsersView(ListAPIView):
@@ -47,14 +50,13 @@ class LoginUserView(APIView):
             return Response({"error": "Signup to create an account"})
 
 
-class LogoutUserView(APIView):
+class LogoutUserView(GenericAPIView):
+    permission_classes = [IsAuthenticated]
     def post(self, request):
         refresh = request.data.get("refresh")
-        try:
-            token = RefreshToken(refresh)
-            token.blacklist()
-        except Exception as e:
-            raise e
+        token = RefreshToken(refresh)
+        token.blacklist()
+        
         return Response({"message": "Logged out"})
 
 

@@ -1,6 +1,9 @@
 from rest_framework import serializers
-from .models import User
+
 from entities.models import Department
+
+from .models import User
+
 
 class ListUsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,7 +45,7 @@ class CreateUserSerializer(serializers.ModelSerializer):
         #group validator
         group = attrs.get("group")
         preferences = attrs.get("preferences")
-        department = attrs.get("department")
+        #department = attrs.get("department")
 
         if group not in ["Student", "Lecturer"]:
             raise serializers.ValidationError({

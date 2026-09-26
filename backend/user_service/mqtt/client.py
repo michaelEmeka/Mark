@@ -1,10 +1,14 @@
-from django.conf import settings
-from awsiot import mqtt_connection_builder
-from awscrt import mqtt
-from .handlers import mqtt_message_handler
-from .rabbitmq.consumer import RabbitMQConsumer
 import json
 import threading
+import time
+
+from awscrt import mqtt
+from awsiot import mqtt_connection_builder
+from django.conf import settings
+
+from .handlers import mqtt_message_handler
+from .rabbitmq.consumer import RabbitMQConsumer
+
 
 class MQTTWorker:
     def __init__(self):
@@ -82,7 +86,7 @@ class MQTTWorker:
         try:
             #keeping the main process alive
             while True:
-                pass
+                time.sleep(1)
         except KeyboardInterrupt:
             print("\nStopping MQTT worker...")
         
@@ -108,7 +112,9 @@ class MQTTWorker:
                 delivery_tag=method.delivery_tag
             )
 
-        except Exception as error:
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+            print(f"Invalid RabbitMQ publish job: {error}")
+        except RuntimeError as error:
             print(f"Failed to process publish job: {error}")
             #rabbitmq redelivers failed jobs(uncacknowledged jobs)
     

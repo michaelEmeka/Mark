@@ -1,9 +1,13 @@
 from datetime import datetime
+
 from django.db import transaction
 from django.utils import timezone
-from ..models import HardwareNode, FingerprintStamp, Attendance
+
 from entities.models import TimetableEntrySchedule
 from mqtt.rabbitmq.producer import request_mqtt_publish
+
+from ..models import Attendance, FingerprintStamp, HardwareNode
+
 
 def process_fingerprint_scan(device_name, data):
     """
@@ -82,9 +86,7 @@ def process_fingerprint_scan(device_name, data):
 
     # Parse the timestamp
     try:
-        scan_datetime = datetime.fromisoformat(
-            timestamp.replace("Z", "+00:00")
-        )
+        scan_datetime = datetime.fromisoformat(timestamp)
 
         scan_datetime = timezone.localtime(scan_datetime)
 
@@ -177,7 +179,7 @@ def process_fingerprint_scan(device_name, data):
 
     # Create attendance
     with transaction.atomic():
-        attendance, created = Attendance.objects.get_or_create(
+        _, created = Attendance.objects.get_or_create(
             user=user,
             timetable_entry_schedule=schedule,
             defaults={
@@ -253,7 +255,7 @@ def process_fingerprint_enrollment(device_name, data):
 
     with transaction.atomic():
 
-        fingerprint_stamp, created = (
+        _, created = (
             FingerprintStamp.objects.get_or_create(
                 hardware_node=hardware_node,
                 fingerprint_id=fingerprint_id,

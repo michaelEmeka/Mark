@@ -1,7 +1,9 @@
+#from datetime import datetime
+
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import Q
-from django.core.validators import MinValueValidator, MaxValueValidator
-from datetime import datetime
+from django.utils import timezone
 
 
 class University(models.Model):
@@ -184,13 +186,13 @@ class TimetableEntrySchedule(models.Model):
         return f"{self.timetable_entry.course.code} | {self.date} | ({self.timetable_entry.start_time} - {self.timetable_entry.end_time})"
 
     def map_date_to_day(self):
-        date_str = str(self.date)  # YYYY-MM-DD format
-        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
-        day_name = date_obj.strftime("%A")  # Full day name (e.g., Friday)
+        #date_str = str(self.date)  # YYYY-MM-DD format
+        #date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+        day_name = self.date.strftime("%A")  # Full day name (e.g., Friday)
         return day_name
 
     def is_past(self):
-        return self.date < datetime.now().date()
+        return self.date < timezone.localdate()#datetime.now().date()
     
     class Meta:
         constraints = [

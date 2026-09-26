@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import HardwareNode, Attendance, FingerprintStamp
+
+from .models import Attendance, FingerprintStamp, HardwareNode
+
 # Register your models here.
 admin.site.register(Attendance)
 admin.site.register(HardwareNode)

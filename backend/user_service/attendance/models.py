@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Q
-from entities.models import School, Department, TimetableEntry
+
 
 class HardwareNode(models.Model):
     name = models.CharField(max_length=100, default="University-name_School-name_Department-name_Device-id", unique=True)

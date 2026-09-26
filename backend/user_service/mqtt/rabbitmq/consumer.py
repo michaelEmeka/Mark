@@ -1,7 +1,7 @@
 ##CONSUMER FOR MQTT WORKER SIDE
-import json
 import pika
 from django.conf import settings
+
 
 class RabbitMQConsumer:
 

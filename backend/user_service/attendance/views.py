@@ -1,14 +1,16 @@
 from django.utils import timezone
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from .models import Attendance
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from entities.models import TimetableEntrySchedule
-from .serializers import ListUserAttendanceSerilaizer
+
 from .models import Attendance
+from .serializers import ListUserAttendanceSerilaizer
+
 
 class ListUserAttendance(ListAPIView):
     permission_classes = [IsAuthenticated]

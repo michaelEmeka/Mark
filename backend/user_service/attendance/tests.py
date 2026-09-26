@@ -13,7 +13,6 @@ from entities.models import (
     School,
     Semester,
     Session,
-    Set,
     Timetable,
     TimetableEntry,
     TimetableEntrySchedule,

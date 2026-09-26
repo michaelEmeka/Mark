@@ -24,5 +24,22 @@ dev = [
     "django-extensions>=4.1",
     "graphviz>=0.21",
     "pydotplus>=2.0.2",
+    "pytest>=9.1.1",
+    "pytest-django>=4.14.0",
+    "pytest-xdist>=3.8.0",
+    "ruff>=0.16.9",
 ]
 
+
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "base.settings"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+
+[tool.ruff]
+exclude = [
+    "**/migrations/*.py"
+]
+
+[tool.ruff.lint]
+ignore = ["RUF012"]

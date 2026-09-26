@@ -1,6 +1,8 @@
 from django.urls import path
-from . import views
 from rest_framework_simplejwt.views import TokenRefreshView
+
+from . import views
+
 urlpatterns = [
     path("", views.GetUserView.as_view(), name="get_user"),
     path('students/', views.ListUsersView.as_view(), name="get_users"),
