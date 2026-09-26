@@ -82,7 +82,7 @@ DATABASES = {
     }
 }
 
-if os.getenv('DATABASE_URL'):
+if not DEBUG:
     DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))
 
 

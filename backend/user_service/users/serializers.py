@@ -39,8 +39,6 @@ class CreateUserSerializer(serializers.ModelSerializer):
         #thus the data type validation order is serializer first then database
 
     def validate(self, attrs):
-        ##type checking
-
         #group validator
         group = attrs.get("group")
         preferences = attrs.get("preferences")
@@ -79,11 +77,13 @@ class CreateUserSerializer(serializers.ModelSerializer):
                 "department": f"Department '{department_name}' does not exist."
             })
 
-        user = User.objects.create(
-            password=password, department=department, **validated_data
+        user = User.objects.create_user(
+            password=password,
+            department=department,
+            **validated_data,
         )
 
-        group = Group.objects.get(name=group_name)
+        group, _ = Group.objects.get_or_create(name=group_name)
         user.groups.add(group)
 
         return user
