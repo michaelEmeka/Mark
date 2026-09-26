@@ -1,0 +1,262 @@
+/* Shared building blocks used by more than one screen. */
+
+.pad {
+  padding: 22px 22px 20px;
+}
+
+.h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 23px;
+  letter-spacing: -.01em;
+  color: var(--text);
+}
+
+.h2 {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--text);
+}
+
+.muted {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.field label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-faint);
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--card-line);
+  color: var(--text);
+  padding: 12px 13px;
+  border-radius: 11px;
+  font-family: 'IBM Plex Sans';
+  font-size: 14px;
+  outline: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--accent);
+}
+
+.field-row {
+  display: flex;
+  gap: 10px;
+}
+
+.field-row .field {
+  flex: 1;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans';
+  font-weight: 500;
+  font-size: 14.5px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #FFFFFF;
+}
+
+.link {
+  color: var(--accent);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px 6px;
+}
+
+.backbtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--card);
+  border: 1px solid var(--card-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  color: var(--text-dim);
+}
+
+.backbtn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.topbar .h2 {
+  flex: 1;
+}
+
+.list-group {
+  margin: 0 18px 16px;
+  background: var(--card);
+  border: 1px solid var(--card-line);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 15px;
+  border-bottom: 1px solid var(--card-line);
+  cursor: pointer;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item .li-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-dim);
+}
+
+.list-item .li-icon svg {
+  width: 15px;
+  height: 15px;
+}
+
+.list-item .li-text {
+  flex: 1;
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.list-item .li-sub {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.list-item .chev {
+  width: 14px;
+  height: 14px;
+  color: var(--text-faint);
+}
+
+.list-item.danger .li-text {
+  color: var(--coral);
+}
+
+.toggle {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+.toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle .track {
+  position: absolute;
+  inset: 0;
+  background: var(--surface-2);
+  border: 1px solid var(--card-line);
+  border-radius: 20px;
+  transition: .2s;
+  cursor: pointer;
+}
+
+.toggle .knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #B8AF9F;
+  border-radius: 50%;
+  transition: .2s;
+}
+
+.toggle input:checked+.track {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+.toggle input:checked+.track .knob {
+  transform: translateX(18px);
+  background: var(--accent);
+}
+
+.pref-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 15px;
+  border-bottom: 1px solid var(--card-line);
+}
+
+.pref-row:last-child {
+  border-bottom: none;
+}
+
+.pref-mid {
+  flex: 1;
+}
+
+.pref-title {
+  font-size: 13.5px;
+  color: var(--text);
+}
+
+.pref-sub {
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+.callout {
+  margin: 0 18px 16px;
+  padding: 13px 14px;
+  border-radius: 13px;
+  background: var(--teal-dim);
+  border: 1px solid rgba(47, 156, 120, 0.3);
+  font-size: 12px;
+  color: var(--text-dim);
+  line-height: 1.5;
+}

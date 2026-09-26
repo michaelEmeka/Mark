@@ -1,0 +1,17 @@
+.shell{
+  width:100%; max-width:412px; min-height:815px;
+  background:var(--surface);
+  border:1px solid var(--card-line);
+  border-radius:34px;
+  box-shadow:0 24px 60px -24px rgba(20,18,14,0.18), 0 0 0 1px rgba(20,18,14,0.03);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  margin:0 auto;
+}
+.statusbar{ height:24px; display:flex; align-items:center; justify-content:space-between; padding:0 26px; font-family:'IBM Plex Mono', monospace; font-size:11px; color:var(--text-faint); }
+.screens{ flex:1; position:relative; overflow:hidden; }
+.screen{ position:absolute; inset:0; display:none; flex-direction:column; overflow-y:auto; }
+.screen.active{ display:flex; animation:fadeUp .28s ease; }
+@keyframes fadeUp{ from{ opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }

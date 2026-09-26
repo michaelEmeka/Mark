@@ -40,4 +40,8 @@ LTE status(connected and not connected, network bar) - Device displays network b
 Firmware Update status - Device displays update status based on event and holds everything else, though gives option to postpone/cancel update
 
 
-L3: 2k
+scp -i "C:\Users\USER\Downloads\mark_backend_key-pair.pem" `
+"C:\Users\USER\Documents\Mark\backend\user_service\mqtt\certs\aws_iot\worker-certificate.pem.crt" `
+"C:\Users\USER\Documents\Mark\backend\user_service\mqtt\certs\aws_iot\worker-private.pem.key" `
+"C:\Users\USER\Documents\Mark\backend\user_service\mqtt\certs\aws_iot\AmazonRootCA1.pem" `
+ubuntu@18.218.131.22:/home/ubuntu/Mark/backend/user_service/mqtt/certs/aws_iot/

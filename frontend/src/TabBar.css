@@ -1,0 +1,32 @@
+.tabbar {
+    display: flex;
+    border-top: 1px solid var(--card-line);
+    background: var(--surface);
+    padding: 10px 10px 14px;
+}
+
+.tabbtn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    color: var(--text-faint);
+    background: none;
+    border: none;
+    font-family: 'IBM Plex Sans';
+}
+
+.tabbtn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.tabbtn span {
+    font-size: 10px;
+}
+
+.tabbtn.active {
+    color: var(--accent);
+}

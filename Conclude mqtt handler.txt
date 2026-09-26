@@ -7,7 +7,7 @@ if time permits... AWS Iam instead, then hosting
 
 -Then implement fingerprint enrollment, then fingerprint deletion in future
 
--Then integrate with hardware tonight
+-Then integrate with hardware now
 
 -then deploy tomorrow on AWS
 

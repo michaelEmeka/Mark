@@ -43,7 +43,7 @@ MQTT Facing
 Attendance:
 CreateAttendance - create attendance record for a particular user for a particular class
 AcknowledgeAttendance - sends back attendance creation success back to the fingerprint device
-
+NODE SENDS HEARTBEAT TO SERVER TO INDICATE ITS STILL ONLINE, OR WE JUST LISTEN FOR OFFLINE/DISCONNECT ON THE PARTICULAR TOPIC
 
 
 For timetable

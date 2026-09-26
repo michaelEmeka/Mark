@@ -1,0 +1,3 @@
+/* Signup intentionally has no unique rules — it reuses .field, .field-row,
+   .btn and .topbar/.backbtn from styles/common.css. Kept as its own file
+   so every screen has a predictable, matching component + css pair. */

@@ -1,0 +1,126 @@
+.tt-daytabs {
+    display: flex;
+    gap: 6px;
+    padding: 14px 22px;
+    overflow-x: auto;
+}
+
+.tt-tab {
+    flex-shrink: 0;
+    font-size: 12.5px;
+    padding: 8px 13px;
+    border-radius: 20px;
+    background: var(--card);
+    border: 1px solid var(--card-line);
+    color: var(--text-dim);
+    cursor: pointer;
+}
+
+.tt-tab.active {
+    background: var(--accent-dim);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.tt-list {
+    padding: 4px 22px 90px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.tt-entry {
+    background: var(--card);
+    border: 1px solid var(--card-line);
+    border-radius: 14px;
+    padding: 13px 14px;
+    display: flex;
+    gap: 12px;
+}
+
+.tt-entry.scheduled {
+    border-color: rgba(46, 111, 224, 0.35);
+    background: linear-gradient(180deg, rgba(46, 111, 224, 0.06), var(--card));
+}
+
+.tt-time-col {
+    width: 50px;
+    flex-shrink: 0;
+    font-family: 'IBM Plex Mono';
+    font-size: 11.5px;
+    color: var(--text-faint);
+}
+
+.tt-mid {
+    flex: 1;
+}
+
+.tt-course {
+    font-size: 13.5px;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: var(--text);
+}
+
+.tt-venue {
+    font-size: 11.5px;
+    color: var(--text-faint);
+}
+
+.tt-tags {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.tt-tag {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.tt-tag.entry-tag {
+    background: var(--surface-2);
+    color: var(--text-faint);
+}
+
+.tt-tag.sched-tag {
+    background: var(--accent-dim);
+    color: var(--accent);
+}
+
+.tt-tag.onetime-tag {
+    background: var(--teal-dim);
+    color: var(--teal);
+}
+
+.tt-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-faint);
+    font-size: 13px;
+}
+
+.fab {
+    position: absolute;
+    right: 20px;
+    bottom: 88px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 24px -6px rgba(46, 111, 224, 0.4);
+    z-index: 5;
+}
+
+.fab svg {
+    width: 22px;
+    height: 22px;
+}
