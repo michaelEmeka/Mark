@@ -21,9 +21,8 @@ void alertDisplay(uint8_t x, uint8_t y, String text, uint8_t size)
 }
 
 void clearDisplay(){
-  // clears display after 1s
-  vTaskDelay(pdMS_TO_TICKS(1000));
   display.clearDisplay();
+  display.display();
 }
 
 void welcomeDisplay(){

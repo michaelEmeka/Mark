@@ -3,7 +3,7 @@
 
 // RFC4122-ish v4 UUID using esp_random(); good enough as a correlation id,
 // not cryptographically rigorous.
-String generateEventId();
+char *generateEventId();
 
 // PubSubClient callback: parses {"status":..,"message":..} from the backend
 // and forwards it to displayQueue.
@@ -16,4 +16,4 @@ void connectAWS();
 
 // Serializes an EventRecord to JSON (adding a fresh event_id) and publishes
 // it to pubTopic.
-void publishEvent(EventRecord &rec);
+bool publishEvent(EventRecord &rec);

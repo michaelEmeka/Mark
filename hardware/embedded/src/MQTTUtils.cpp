@@ -4,8 +4,9 @@
 #include "SystemState.h"
 #include "secrets.h"
 
-String generateEventId(){
-  char buf[37];
+
+char *generateEventId(){
+  static char buf[40];
   snprintf(buf, sizeof(buf), "%08x-%04x-%04x-%04x-%08x%04x",
     (unsigned int)esp_random(),
     (unsigned int)(esp_random() & 0xFFFF),
@@ -13,7 +14,7 @@ String generateEventId(){
     (unsigned int)((esp_random() & 0x3FFF) | 0x8000),
     (unsigned int)esp_random(),
     (unsigned int)(esp_random() & 0xFFFF));
-  return String(buf);
+  return buf;
 }
 
 // Called by PubSubClient whenever a message arrives on a subscribed topic.
@@ -72,14 +73,17 @@ void connectAWS(){
     return;
   }
 
-  client.subscribe(subTopic);
+  if (client.subscribe(subTopic))
+  {
+    Serial.printf("Subscribed to %s\n", subTopic);
+  }
   stateManager(SystemState::LTEState::Connected);
   Serial.println(" AWS IoT connected!");
 }
 
-void publishEvent(EventRecord &rec){
+bool publishEvent(EventRecord &rec){
   StaticJsonDocument<256> doc;
-  doc["event_id"] = generateEventId();
+  doc["event_id"] = rec.eventID;
   doc["event_type"] = rec.event_type;
   doc["fingerprint_id"] = rec.userID;
   doc["timestamp"] = rec.datetime_utc;
@@ -91,8 +95,10 @@ void publishEvent(EventRecord &rec){
   if (client.publish(pubTopic, buffer)){
     Serial.print("Published: ");
     Serial.println(buffer);
+    return true;
   } else {
     Serial.printf("Publish failed, client.state()=%d\n", client.state());
+    return false;
   }
   vTaskDelay(pdMS_TO_TICKS(10000));
 }

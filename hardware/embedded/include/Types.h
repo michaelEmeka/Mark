@@ -3,6 +3,7 @@
 #include "Config.h"
 
 typedef struct EventRecord {
+    char eventID[40];
     char event_type[32]; // "fingerprint_enrolled" or "fingerprint_scan"
     int userID;
     char datetime_utc[32];

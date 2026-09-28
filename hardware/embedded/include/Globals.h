@@ -12,6 +12,7 @@
 #include <PubSubClient.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/queue.h>
+#include <freertos/semphr.h>
 
 #include "Config.h"
 #include "Types.h"
@@ -29,10 +30,13 @@ extern WiFiClientSecure net;
 extern PubSubClient client;
 extern char pubTopic[64];
 extern char subTopic[64];
+extern char eventsDir[20];
 
 // FreeRTOS queues (created in setup(), defined in main.cpp)
 extern QueueHandle_t networkQueue;
 extern QueueHandle_t displayQueue;
+extern QueueHandle_t loggingQueue;
+extern SemaphoreHandle_t sdMutex;
 
 // App-level singletons (defined in main.cpp)
 extern SystemState state;

@@ -10,3 +10,6 @@ void networkTask(void *pvParameters);
 
 // Drains displayQueue and renders each message on the OLED.
 void displayTask(void *pvParameters);
+
+// Handles SD-Card Utility
+void loggingTask(void *pvParameters);
