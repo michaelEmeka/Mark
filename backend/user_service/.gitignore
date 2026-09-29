@@ -11,6 +11,44 @@ wheels/
 .env
 env
 venv
+certs/
+.env
+.env*
+.venv
+env/
+venv/
 
 # Database
 *.sqlite3
+
+*.dev
+
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Django
+staticfiles/
+media/
+
+# Database
+*.sqlite3
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

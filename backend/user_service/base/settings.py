@@ -6,7 +6,7 @@ import dj_database_url
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv("../.env.prod")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,7 +22,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", "ci-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == 'True'
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
-
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS","https:127.0.0.1").split(", ")
 
 # Application definition
 
@@ -121,8 +121,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = 'static/' #static files url
+STATIC_ROOT = BASE_DIR / 'staticfiles' #where we want to collect our static files into
+
 #Default primary user model for authentication and authorization
 AUTH_USER_MODEL = "users.User"
 

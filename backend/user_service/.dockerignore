@@ -1,3 +1,11 @@
+# Environments
 certs/
 .env
+.env*
 .venv
+env/
+venv/
+
+
+# Database
+#*.sqlite3

@@ -9,13 +9,14 @@ WORKDIR /app
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
-COPY --chown=appuser:appuser . .
-
+COPY pyproject.toml uv.lock /app/
 RUN uv sync --frozen --no-dev
-RUN uv run python manage.py collectstatic --noinput
 RUN chown -R appuser:appuser /app/.venv
-RUN chown -R appuser:appuser /app/staticfiles
+
+COPY --chown=appuser:appuser . .
 
 USER appuser
 
 EXPOSE 8000
+
+RUN chmod +x /app/entrypoint.prod.sh
