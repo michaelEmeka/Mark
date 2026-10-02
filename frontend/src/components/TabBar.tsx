@@ -1,6 +1,6 @@
 import "./TabBar.css";
 import { HomeIcon, TimetableIcon, ProfileIcon } from "./icons";
-import type { TabId } from "./types";
+import type { TabId } from "../types";
 
 interface TabBarProps {
   activeTab: TabId | null;

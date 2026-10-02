@@ -1,6 +1,6 @@
-import "../styles/Timetable.css";
+import "./TimetableScreen.css";
 import { DAYS, ENTRIES, SCHEDULES } from "../data/mockData";
-import { PlusIcon } from "../icons";
+import { PlusIcon } from "../components/icons";
 import type { Role, Day } from "../types";
 
 interface TimetableScreenProps {

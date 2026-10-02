@@ -1,32 +1,33 @@
-# React + TypeScript + Vite
+# Mark — student app (TypeScript / Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Same component breakdown as the JS version, converted to .tsx/.ts with
+proper prop types and a shared types.ts for the domain model.
 
-Currently, two official plugins are available:
+src/
+  types.ts                     — Role, Day, ScreenId, TabId, TimetableEntry,
+                                  TimetableEntrySchedule, WeekStripDay
+  main.tsx                     — Vite entry point
+  components/
+    App.tsx / App.css          — root: screen/role/day state, shell + statusbar
+    RoleSwitch.tsx / .css      — preview-only student/course-rep toggle
+    TabBar.tsx / .css          — bottom nav
+    icons.tsx                  — shared inline SVG icons
+    screens/
+      LoginScreen, SignupScreen, DashboardScreen, TimetableScreen,
+      CreateScheduleScreen (course-rep only), ProfileScreen,
+      ProfileEditScreen, PreferencesScreen, AutomationScreen (course-rep only)
+      — each takes a typed props interface (active, callbacks, role, etc.)
+  data/
+    mockData.ts                 — typed ENTRIES/SCHEDULES arrays + nav helpers
+  styles/
+    theme.css                   — CSS variables (white background, blue accent)
+    common.css                  — classes shared by 3+ screens
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Root config:
+  index.html, vite.config.ts, tsconfig.json, tsconfig.node.json, package.json
+  — standard `npm create vite@latest -- --template react-ts` layout, so this
+  folder runs as-is: `npm install && npm run dev`.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Screens with no unique CSS (Signup, CreateSchedule, ProfileEdit, Preferences,
+Automation) still get their own .css file — they lean entirely on common.css,
+kept for a predictable one-component-one-css-file pattern.

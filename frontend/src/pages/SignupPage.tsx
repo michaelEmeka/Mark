@@ -1,18 +1,17 @@
-import "../styles/Signup.css";
-import { BackIcon } from "../icons";
+import "./SignupPage.css";
+import { useNavigate } from "react-router-dom"
 
 interface SignupScreenProps {
-  active: boolean;
   onSignUp: () => void;
-  onBack: () => void;
 }
 
-export default function SignupScreen({ active, onSignUp, onBack }: SignupScreenProps) {
+export default function SignupPage({onSignUp}: SignupScreenProps) {
+  const navigate = useNavigate()
+
+  //console.log("loaded signup")
   return (
-    <div className={`screen ${active ? "active" : ""}`}>
-      <div className="topbar" style={{ paddingTop: 22 }}>
-        <div className="backbtn" onClick={onBack}><BackIcon /></div>
-      </div>
+    <>
+      <div className="auth-mark">M</div>
       <div className="pad" style={{ paddingTop: 14 }}>
         <div className="h1">Create account</div>
         <div className="muted" style={{ marginTop: 4 }}>Same details, straight onto your dashboard</div>
@@ -35,7 +34,8 @@ export default function SignupScreen({ active, onSignUp, onBack }: SignupScreenP
           <div className="field"><label>Confirm</label><input type="password" placeholder="••••••••" /></div>
         </div>
         <button className="btn btn-primary" onClick={onSignUp}>Sign up</button>
+        <div className="auth-foot">Have and account? <span className="link" onClick={()=>navigate("/login")}>Login</span></div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,0 +1,68 @@
+.greet-row{ display:flex; align-items:center; justify-content:space-between; }
+.greet-avatar{ width:40px; height:40px; border-radius:50%; background:linear-gradient(155deg,#5B7A8C,#3D5A6C); display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:14px; color:#fff; }
+
+.daystrip{ display:flex; gap:8px; overflow-x:auto; padding:16px 22px; }
+
+/* Fixed height + flex-centering so the border box actually wraps both
+   lines of text evenly, instead of relying on padding + text-align
+   (which let the border sit off-center around the date). */
+.daychip{
+  flex:0 0 auto;
+  width:46px;
+  height:58px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+  border-radius:13px;
+  background:var(--card);
+  border:1px solid var(--card-line);
+  cursor:pointer;
+}
+.daychip .dname{ font-size:10.5px; color:var(--text-faint); line-height:1; }
+.daychip .dnum{ font-family:'IBM Plex Mono'; font-size:14px; line-height:1; color:var(--text); }
+.daychip.today{ background:var(--accent-dim); border-color:var(--accent); }
+.daychip.today .dname, .daychip.today .dnum{ color:var(--accent); }
+
+.today-list{ padding:0 22px; display:flex; flex-direction:column; gap:9px; margin-bottom:6px; }
+.class-row{ display:flex; align-items:center; gap:12px; background:var(--card); border:1px solid var(--card-line); border-radius:13px; padding:11px 13px; }
+.class-time{ font-family:'IBM Plex Mono'; font-size:11.5px; color:var(--text-faint); width:44px; flex-shrink:0; }
+.class-bar{ width:3px; align-self:stretch; border-radius:2px; background:var(--accent); flex-shrink:0; }
+.class-bar.dim{ background:var(--card-line); }
+.class-mid{ flex:1; min-width:0; }
+.class-course{ font-size:13.5px; font-weight:500; color:var(--text); }
+.class-venue{ font-size:11.5px; color:var(--text-faint); }
+.class-badge{ font-size:10px; padding:3px 8px; border-radius:20px; flex-shrink:0; }
+.class-badge.on{ background:var(--teal-dim); color:var(--teal); }
+.class-badge.off{ background:transparent; color:var(--text-faint); border:1px solid var(--card-line); }
+
+.stat-cards{ display:flex; gap:12px; padding:14px 22px; }
+.stat-card{ flex:1; background:var(--card); border:1px solid var(--card-line); border-radius:15px; padding:15px; }
+.stat-card .lab{ font-size:11.5px; color:var(--text-faint); margin-bottom:8px; }
+.ring-mini-wrap{ display:flex; align-items:center; gap:10px; }
+.ring-mini-track{ fill:none; stroke:var(--surface-2); stroke-width:6; }
+.ring-mini-val{ fill:none; stroke:var(--teal); stroke-width:6; stroke-linecap:round; transform:rotate(-90deg); transform-origin:28px 28px; }
+.ring-mini-num{ font-family:'Fraunces',serif; font-size:15px; color:var(--text); }
+
+.infer-row{ display:flex; align-items:baseline; gap:6px; }
+.infer-num{ font-family:'Fraunces',serif; font-size:22px; color:var(--text); }
+.infer-label{ font-size:12px; color:var(--text-faint); }
+.infer-bar{ height:6px; border-radius:4px; background:var(--surface-2); margin-top:10px; overflow:hidden; }
+.infer-bar-fill{ height:100%; background:linear-gradient(90deg,var(--teal),var(--accent)); border-radius:4px; }
+.infer-note{ font-size:11px; color:var(--text-faint); margin-top:8px; line-height:1.4; }
+
+.activity-head{ display:flex; align-items:center; justify-content:space-between; padding:6px 22px 10px; }
+.live-pill{ display:flex; align-items:center; gap:6px; font-size:10.5px; color:var(--teal); }
+.live-dot{ width:6px; height:6px; border-radius:50%; background:var(--teal); animation:pulseDot 1.8s infinite; }
+@keyframes pulseDot{ 0%,100%{opacity:1;} 50%{opacity:.25;} }
+
+.activity-list{ padding:0 22px 20px; display:flex; flex-direction:column; gap:8px; }
+.activity-row{ display:flex; align-items:center; gap:11px; }
+.act-icon{ width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.act-icon.ok{ background:var(--teal-dim); color:var(--teal); }
+.act-icon.miss{ background:var(--coral-dim); color:var(--coral); }
+.act-icon svg{ width:13px; height:13px; }
+.act-mid{ flex:1; min-width:0; }
+.act-course{ font-size:13px; color:var(--text); }
+.act-when{ font-size:11px; color:var(--text-faint); }

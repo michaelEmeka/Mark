@@ -1,0 +1,5 @@
+.demo-bar{ display:flex; flex-direction:column; align-items:center; gap:7px; margin-bottom:16px; }
+.demo-bar .demo-label{ font-size:10.5px; letter-spacing:.03em; color:var(--text-faint); }
+.role-switch{ display:flex; background:var(--card); border:1px solid var(--card-line); border-radius:10px; padding:3px; gap:2px; }
+.role-switch button{ font-family:'IBM Plex Sans'; font-size:12px; border:none; background:transparent; color:var(--text-faint); padding:6px 12px; border-radius:7px; cursor:pointer; transition:.15s ease; }
+.role-switch button.active{ background:var(--accent-dim); color:var(--accent); }

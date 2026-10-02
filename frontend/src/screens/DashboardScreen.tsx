@@ -1,6 +1,6 @@
-import "../styles/Dashboard.css";
+import "./DashboardScreen.css";
 import { WEEK_STRIP, TODAY_LABEL } from "../data/mockData";
-import { CheckIcon, MissIcon } from "../icons";
+import { CheckIcon, MissIcon } from "../components/icons";
 
 interface DashboardScreenProps {
   active: boolean;
