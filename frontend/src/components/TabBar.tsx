@@ -4,13 +4,12 @@ import type { TabId } from "../types";
 
 interface TabBarProps {
   activeTab: TabId | null;
-  hidden: boolean;
   onNavigate: (tab: TabId) => void;
 }
 
-export default function TabBar({ activeTab, onNavigate, hidden }: TabBarProps) {
+export default function TabBar({ activeTab, onNavigate}: TabBarProps) {
   return (
-    <div className="tabbar" style={{ display: hidden ? "none" : "flex" }}>
+    <div className="tabbar" >
       <button className={`tabbtn ${activeTab === "dashboard" ? "active" : ""}`} onClick={() => onNavigate("dashboard")}>
         <HomeIcon /><span>Home</span>
       </button>

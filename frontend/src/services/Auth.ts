@@ -15,7 +15,7 @@ interface LoginResponse {
 }
 
 async function Login({ email, password }: LoginRequest): Promise<LoginResponse> {
-    let url = `${BASE_URL}/api/v1/users/login/`;
+    let url = `${BASE_URL}/api/v1/user/login/`;
     try {
         const res = await axios.post(url, { email, password });
         localStorage.setItem("access", res.data.access);
@@ -29,4 +29,20 @@ async function Login({ email, password }: LoginRequest): Promise<LoginResponse> 
     }
 }
 
-export { Login };
+async function fetchUser() {
+    let url = `${BASE_URL}/api/v1/user/`;
+    try {
+        const res = await axios.get(url, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("access")}`
+            }
+        });
+        console.log("User data retrieved:", res.data);
+        return res.data;
+    } catch (error: any) {
+        console.error("Failed to retrieve user data:", error.response?.data || error.message);
+        throw error;
+    }
+}
+
+export { Login, fetchUser };

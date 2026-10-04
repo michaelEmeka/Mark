@@ -16,7 +16,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-        let response = await Login({
+        await Login({
           email: (e.currentTarget.elements[0] as HTMLInputElement).value,
           password: (e.currentTarget.elements[1] as HTMLInputElement).value
         });

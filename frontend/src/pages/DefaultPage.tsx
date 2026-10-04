@@ -22,7 +22,6 @@ export default function DefaultPage() {
   //const [role, setRole] = useState<Role>("student");
   const [activeDay, setActiveDay] = useState<Day>("Thu");
 
-  const isAuth = screen === "screen-login" || screen === "screen-signup";
   const activeTab = rootTabFor(screen);
   //console.log("in default page")
   return (
@@ -30,7 +29,7 @@ export default function DefaultPage() {
       {/* <RoleSwitch role={role} onChange={setRole} /> */}
 
       <div className="shell">
-        <div className="statusbar"><span>9:41</span><span>Mark</span></div> 
+        {/* <div className="statusbar"><span>9:41</span><span>Mark</span></div> */}
 
         <div className="screens">
           <DashboardScreen active={screen === "screen-dashboard"} />
@@ -47,7 +46,6 @@ export default function DefaultPage() {
           />
           <ProfileScreen
             active={screen === "screen-profile"}
-            //role={role}
             onEdit={() => setScreen("screen-profile-edit")}
             onPreferences={() => setScreen("screen-preferences")}
             onAutomation={() => setScreen("screen-automation")}
@@ -70,7 +68,6 @@ export default function DefaultPage() {
 
         <TabBar
           activeTab={activeTab}
-          hidden={isAuth}
           onNavigate={(tab) => setScreen(TAB_ROOTS[tab])}
         />
       </div>

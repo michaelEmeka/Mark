@@ -1,21 +1,33 @@
 import "./DashboardScreen.css";
 import { WEEK_STRIP, TODAY_LABEL } from "../data/mockData";
 import { CheckIcon, MissIcon } from "../components/icons";
+import { useUserContext } from "../contexts/UserContext";
 
 interface DashboardScreenProps {
   active: boolean;
 }
 
 export default function DashboardScreen({ active }: DashboardScreenProps) {
+  
+  const context = useUserContext();
+
+  if (!context) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  const { user, loading } = context;
+
+  console.log("eofno"+user)
+  
   return (
     <div className={`screen ${active ? "active" : ""}`}>
+      {loading && <div className="loading-overlay"><div className="spinner" /></div>}
       <div className="pad" style={{ paddingBottom: 6 }}>
         <div className="greet-row">
           <div>
-            <div className="h1">Hi, Michael</div>
+            <div className="h1">Hi, {user?.firstname}</div>
             <div className="muted" style={{ marginTop: 2 }}>Thursday, 10 September</div>
           </div>
-          <div className="greet-avatar">MO</div>
+          <div className="greet-avatar">{user?.firstname?.charAt(0) || "MO"}</div>
         </div>
       </div>
 

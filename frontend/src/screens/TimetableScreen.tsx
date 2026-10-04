@@ -5,13 +5,12 @@ import type { Role, Day } from "../types";
 
 interface TimetableScreenProps {
   active: boolean;
-  role: Role;
   activeDay: Day;
   setActiveDay: (day: Day) => void;
   onOpenCreateSchedule: () => void;
 }
 
-export default function TimetableScreen({ active, role, activeDay, setActiveDay, onOpenCreateSchedule }: TimetableScreenProps) {
+export default function TimetableScreen({ active, activeDay, setActiveDay, onOpenCreateSchedule }: TimetableScreenProps) {
   const todaysEntries = ENTRIES.filter((e) => e.day === activeDay);
 
   return (
@@ -53,11 +52,11 @@ export default function TimetableScreen({ active, role, activeDay, setActiveDay,
         })}
       </div>
 
-      {role === "courserep" && (
+      {/*role === "courserep" && (
         <button className="fab" onClick={onOpenCreateSchedule}>
           <PlusIcon />
         </button>
-      )}
+      )*/}
     </div>
   );
 }
