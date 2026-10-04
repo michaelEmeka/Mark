@@ -7,5 +7,5 @@ build:
 compiledb:
 	pio run -t compiledb
 
-terminal:
+monitor:
 	pio device monitor
