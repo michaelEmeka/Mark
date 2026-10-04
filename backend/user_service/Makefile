@@ -18,8 +18,8 @@ migrate:
 migrations:
 	uv run python manage.py makemigrations
 
-.PHONY: run-server
-run-server:
+.PHONY: runserver
+runserver:
 	uv run python manage.py runserver
 
 .PHONY: run_mqtt_worker

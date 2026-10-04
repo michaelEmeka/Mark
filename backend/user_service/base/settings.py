@@ -6,11 +6,12 @@ import dj_database_url
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
-load_dotenv("../.env.prod")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env.dev") 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -22,11 +23,15 @@ SECRET_KEY = os.getenv("SECRET_KEY", "ci-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == 'True'
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost").split(",")
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS","https:127.0.0.1").split(", ")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS","http://localhost:5173").split(",")
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS","http://localhost:5173").split(",")
 
+print(CSRF_TRUSTED_ORIGINS)
+print(CORS_ALLOWED_ORIGINS)
 # Application definition
 
 INSTALLED_APPS = [
+    "corsheaders",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,6 +49,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -83,8 +90,11 @@ DATABASES = {
     }
 }
 
+
 if not DEBUG:
-    DATABASES['default'] = dj_database_url.parse(os.getenv('DATABASE_URL'))
+    db_url = os.getenv('DATABASE_URL')
+    if db_url:
+        DATABASES['default'].update(dj_database_url.parse(db_url))
 
 
 # Password validation

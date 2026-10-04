@@ -2,8 +2,8 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("user/", include('users.urls')),
-    path("", include('entities.urls')),
-    path("attendance/", include('attendance.urls'))
+    path("api/v1/admin/", admin.site.urls),
+    path("api/v1/user/", include('users.urls')),
+    path("api/v1/entities/", include('entities.urls')),
+    path("api/v1/attendance/", include('attendance.urls'))
 ]
