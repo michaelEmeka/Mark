@@ -9,6 +9,12 @@ typedef struct EventRecord {
     char datetime_utc[32];
 } EventRecord;
 
+typedef struct StatusRecord {
+    char eventID[40];
+    char status[16];
+    char message[DISPLAY_MSG_LEN];
+} StatusRecord;
+
 typedef struct Configs {
   uint8_t last_id_reg = 1;
   uint8_t admin_id;

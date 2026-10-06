@@ -31,14 +31,18 @@ void messageHandler(char* topic, byte* payload, unsigned int length) {
         return;
     }
 
-    const char* status = doc["status"] | "UNKNOWN";
-    const char* message = doc["message"] | "";
+    StatusRecord statusMessage = {};
+    strncpy(statusMessage.eventID, doc["event_id"] | "", sizeof(statusMessage.eventID) - 1);
+    statusMessage.eventID[sizeof(statusMessage.eventID) - 1] = '\0';
 
-    static char msg[DISPLAY_MSG_LEN];
-    snprintf(msg, sizeof(msg), "%s: %s", status, message);
+    strncpy(statusMessage.status, doc["status"] | "UNKNOWN", sizeof(statusMessage.status) - 1);
+    statusMessage.status[sizeof(statusMessage.status) - 1] = '\0';
 
-    Serial.printf("Status from backend: %s - %s\n", status, message);
-    xQueueSend(displayQueue, msg, DISPLAY_SEND_TIMEOUT);
+    strncpy(statusMessage.message, doc["message"] | "", sizeof(statusMessage.message) - 1);
+    statusMessage.message[sizeof(statusMessage.message) - 1] = '\0';
+
+    Serial.printf("Status from backend: %s - %s\n", statusMessage.status, statusMessage.message);
+    xQueueSend(statusQueue, &statusMessage, DISPLAY_SEND_TIMEOUT);
 }
 
 void connectAWS() {

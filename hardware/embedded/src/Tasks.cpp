@@ -68,7 +68,6 @@ void networkTask(void* pvParameters) {
 
     while (1) {
         char msg[DISPLAY_MSG_LEN];
-        char path[64];
 
         if (!client.connected()) {
             Serial.printf("MQTT disconnected, client.state()=%d, RSSI=%d\n", client.state(), WiFi.RSSI());
@@ -80,9 +79,6 @@ void networkTask(void* pvParameters) {
 
         if (xQueueReceive(networkQueue, &rec, 0) == pdTRUE) {
             if (publishEvent(rec)) {
-                // delete event from stored logging
-                snprintf(path, sizeof(path), "%s%s", eventsDir, rec.eventID);
-                deleteFile(SD, path);
                 snprintf(msg, sizeof(msg), "ID %d Synced!", rec.userID);
             } else {
                 snprintf(msg, sizeof(msg), "ID %d to be Synced.", rec.userID);
@@ -90,6 +86,28 @@ void networkTask(void* pvParameters) {
             xQueueSend(displayQueue, msg, DISPLAY_SEND_TIMEOUT);
         }
 
+        vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+}
+
+void statusTask(void* pvParameters) {
+    StatusRecord statusMessage;
+    Serial.println("Status Task");
+    while (1) {
+        if (xQueueReceive(statusQueue, &statusMessage, portMAX_DELAY) == pdTRUE) {
+            char path[72];
+            char msg[DISPLAY_MSG_LEN];
+
+            snprintf(path, sizeof(path), "%s/%s", eventsDir, statusMessage.eventID);
+
+            if (strcmp(statusMessage.status, "OK") == 0 || strcmp(statusMessage.status, "CREATED") == 0 || strcmp(statusMessage.status, "ERROR") == 0) {
+                deleteFile(SD, path);
+                vTaskDelay(pdMS_TO_TICKS(100)); // Allow time for the filesystem to update
+            }
+
+            snprintf(msg, sizeof(msg), "%s: %s", statusMessage.status, statusMessage.message);
+            xQueueSend(displayQueue, msg, DISPLAY_SEND_TIMEOUT);
+        }
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
@@ -122,11 +140,11 @@ void loggingTask(void* pvParameters) {
     }
 
     while (1) {
-        char path[64];
+        char path[72];
         char msg[DISPLAY_MSG_LEN];
 
         if (xQueueReceive(loggingQueue, &rec, portMAX_DELAY)) {
-            snprintf(path, sizeof(path), "%s%s", eventsDir, rec.eventID);
+            snprintf(path, sizeof(path), "%s/%s", eventsDir, rec.eventID);
             if (writeFile(SD, path, &rec)) {
                 Serial.println("Event logged");
 
@@ -148,12 +166,26 @@ void loggingTask(void* pvParameters) {
 }
 
 void retryTask(void* pvParameters) {
-    const TickType_t retryInterval = pdMS_TO_TICKS(30000);
+    // const TickType_t retryInterval = pdMS_TO_TICKS(30000);
+    const TickType_t retryInterval = pdMS_TO_TICKS(5000);
 
+    /////////
+    //////// WE WANT TO CHECK EACH RETRIED FILE TRANSMIT FIRST IF IT STILL EXISTS ON THE SD CARD
+    ////// BEFORE ATTEMPTING TO SEND ANOTHER EVENT TO THE NETWORK QUEUE. OTHERWISE, WE RISK FILLING THE NETWORK QUEUE WITH DUPLICATE EVENTS.
+    ///////// A SOLUTION IS TO CHECK IF THE FILE STILL EXISTS ON THE SD CARD BEFORE ATTEMPTING TO SEND IT TO THE NETWORK QUEUE. IF IT DOESN'T EXIST, IT HAS BEEN ACKNOWLEDGED AND DELETED BY STATUS TASK, WE CAN SKIP IT AND MOVE ON TO THE NEXT FILE.
+    ///////// PROBABLY USING AN ACK QUEUE from STATUS to RETRY task
+    
     while (1) {
         vTaskDelay(retryInterval);
+        Serial.println("Retry Task");
+
+        if (state.LTE != SystemState::LTEState::Connected) {
+            Serial.println("LTE not connected, skipping retry");
+            continue;
+        }
 
         if (!SD.exists(eventsDir)) {
+            Serial.println("eventsDir does not exist, skipping retry");
             continue;
         }
 
@@ -167,13 +199,15 @@ void retryTask(void* pvParameters) {
 
         while (File entry = dir.openNextFile()) {
             if (!entry.isDirectory()) {
-                char path[64];
-                snprintf(path, sizeof(path), "%s%s", eventsDir, entry.name());
+                char path[72];
+                snprintf(path, sizeof(path), "%s/%s", eventsDir, entry.name());
 
                 EventRecord rec = readFile(SD, path);
                 if (strlen(rec.eventID) == 0) {
                     Serial.printf("Skipping unreadable event file: %s\n", path);
-                    deleteFile(SD, path);
+                    if (deleteFile(SD, path)) {
+                        Serial.printf("Deleted unreadable event file: %s\n", path);
+                    }
                     entry.close();
                     continue;
                 }
@@ -181,7 +215,7 @@ void retryTask(void* pvParameters) {
                 if (xQueueSend(networkQueue, &rec, 0) == pdTRUE) {
                     Serial.printf("Queued retry for SD-backed event %s\n", rec.eventID);
                 } else {
-                    Serial.println("Retry queue full; will retry on next pass");
+                    Serial.println("Network queue full; will retry on next pass");
                 }
             }
 

@@ -8,6 +8,10 @@ void fingerprintTask(void* parameter);
 // client.loop(), and drains networkQueue by publishing each EventRecord.
 void networkTask(void* pvParameters);
 
+// Handles inbound MQTT status payloads: deletes synced event files and updates
+// the OLED status display after backend acknowledgement.
+void statusTask(void* pvParameters);
+
 // Drains displayQueue and renders each message on the OLED.
 void displayTask(void* pvParameters);
 

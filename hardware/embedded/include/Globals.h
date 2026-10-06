@@ -36,6 +36,7 @@ extern char eventsDir[20];
 extern QueueHandle_t networkQueue;
 extern QueueHandle_t displayQueue;
 extern QueueHandle_t loggingQueue;
+extern QueueHandle_t statusQueue;
 extern SemaphoreHandle_t sdMutex;
 
 // App-level singletons (defined in main.cpp)

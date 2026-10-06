@@ -29,6 +29,7 @@ char eventsDir[20];
 QueueHandle_t networkQueue;
 QueueHandle_t displayQueue;
 QueueHandle_t loggingQueue;
+QueueHandle_t statusQueue;
 SemaphoreHandle_t sdMutex;
 
 SystemState state{
@@ -52,7 +53,8 @@ void setup() {
     // -------------- Initialize
     snprintf(pubTopic, sizeof(pubTopic), "attendance/device/%s/events", DEVICE_ID);
     snprintf(subTopic, sizeof(subTopic), "attendance/device/%s/status", DEVICE_ID);
-    snprintf(eventsDir, sizeof(eventsDir), "/attendance/events/");
+    snprintf(eventsDir, sizeof(eventsDir), "/attendance/events");
+    Serial.printf("eventsDir=%s\n", eventsDir);
 
     // -------------- Initializing OLED Display
     if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
@@ -104,13 +106,15 @@ void setup() {
     networkQueue = xQueueCreate(10, sizeof(EventRecord));
     displayQueue = xQueueCreate(15, DISPLAY_MSG_LEN);
     loggingQueue = xQueueCreate(10, sizeof(EventRecord));
+    statusQueue = xQueueCreate(10, sizeof(StatusRecord));
     sdMutex = xSemaphoreCreateMutex();
 
     xTaskCreate(fingerprintTask, "Fingerprint", 4096, NULL, 3, NULL);
     xTaskCreate(networkTask, "Network", 16384, NULL, 2, NULL);
+    xTaskCreate(statusTask, "Status", 4096, NULL, 2, NULL);
     xTaskCreate(displayTask, "Display", 4096, NULL, 1, NULL);
     xTaskCreate(loggingTask, "Logging", 4096, NULL, 4, NULL);
-    xTaskCreate(retryTask, "Retry", 4096, NULL, 5, NULL);
+    xTaskCreate(retryTask, "Retry", 4096, NULL, 4, NULL);
 }
 
 void loop() {
