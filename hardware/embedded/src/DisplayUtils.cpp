@@ -43,7 +43,7 @@ void clearDisplay() {
 
 void welcomeDisplay() {
     int n = 2;
-    const char* texts[2] = {"Hi", "I'm Mark"};
+    const char* texts[2] = {"Hi", "Welcome to Class"};
     int timelines[2] = {2000, 3000};
     int sizes[2] = {3, 2};
 

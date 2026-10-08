@@ -7,6 +7,7 @@ const char* toString(SystemState::LTEState state)
     {
         case SystemState::LTEState::Connected:    return "Connected";
         case SystemState::LTEState::Disconnected: return "Disconnected";
+        case SystemState::LTEState::Transmitting:  return "Transmitting";
     }
     return "Unknown";
 }

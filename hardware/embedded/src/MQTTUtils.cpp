@@ -82,10 +82,11 @@ void connectAWS() {
 
     if (client.subscribe(subTopic)) {
         Serial.printf("Subscribed to %s\n", subTopic);
+        stateManager(SystemState::LTEState::Connected);
+        Serial.println("AWS IoT connected!");
     }
 
-    stateManager(SystemState::LTEState::Connected);
-    Serial.println("AWS IoT connected!");
+    
 }
 
 bool publishEvent(EventRecord& rec) {

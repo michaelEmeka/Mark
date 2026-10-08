@@ -36,21 +36,20 @@ void fingerprintTask(void* parameter) {
                     snprintf(rec.eventID, sizeof(rec.eventID), "%s", generateEventId());
                     snprintf(rec.event_type, sizeof(rec.event_type), "%s", "fingerprint_enrolled");
                     rec.userID = new_id_reg;
-                    getCurrentDateTime(3600).toCharArray(rec.datetime_utc, sizeof(rec.datetime_utc));
-                    snprintf(rec.datetime_utc, sizeof(rec.datetime_utc), "%sZ", getCurrentDateTime().c_str());
+                    snprintf(rec.datetime_utc, sizeof(rec.datetime_utc), "%s", getCurrentDateTime(3600).c_str());
 
                     // Log event first for eventual consistency
                     xQueueSend(loggingQueue, &rec, portMAX_DELAY);
                     stateManager(SystemState::FGPState::Registered);
                 }
-            } else {
+            }
+            else {
                 // Regular match -> queue attendance event for networkTask to publish
                 EventRecord rec;
                 snprintf(rec.eventID, sizeof(rec.eventID), "%s", generateEventId());
                 snprintf(rec.event_type, sizeof(rec.event_type), "%s", "fingerprint_scan");
                 rec.userID = id;
-                getCurrentDateTime(3600).toCharArray(rec.datetime_utc, sizeof(rec.datetime_utc));
-                snprintf(rec.datetime_utc, sizeof(rec.datetime_utc), "%sZ", getCurrentDateTime().c_str());
+                snprintf(rec.datetime_utc, sizeof(rec.datetime_utc), "%s", getCurrentDateTime(3600).c_str());
 
                 // Log event first for eventual consistency
                 xQueueSend(loggingQueue, &rec, portMAX_DELAY);
@@ -69,7 +68,7 @@ void networkTask(void* pvParameters) {
     while (1) {
         char msg[DISPLAY_MSG_LEN];
 
-        if (!client.connected()) {
+        if (!client.connected() || state.LTE == SystemState::LTEState::Disconnected) {
             Serial.printf("MQTT disconnected, client.state()=%d, RSSI=%d\n", client.state(), WiFi.RSSI());
             stateManager(SystemState::LTEState::Disconnected);
             connectAWS();
@@ -78,12 +77,16 @@ void networkTask(void* pvParameters) {
         client.loop(); // must run frequently: keeps connection alive + delivers subscribed messages
 
         if (xQueueReceive(networkQueue, &rec, 0) == pdTRUE) {
-            if (publishEvent(rec)) {
-                snprintf(msg, sizeof(msg), "ID %d Synced!", rec.userID);
-            } else {
-                snprintf(msg, sizeof(msg), "ID %d to be Synced.", rec.userID);
-            }
-            xQueueSend(displayQueue, msg, DISPLAY_SEND_TIMEOUT);
+          state.LTE = SystemState::LTEState::Transmitting;
+          if (publishEvent(rec)) {
+              snprintf(msg, sizeof(msg), "ID %d Synced!", rec.userID);
+              state.LTE = SystemState::LTEState::Connected;
+          }
+          else {
+              snprintf(msg, sizeof(msg), "ID %d to be Synced.", rec.userID);
+              state.LTE = SystemState::LTEState::Connected;
+          }
+          xQueueSend(displayQueue, msg, DISPLAY_SEND_TIMEOUT);
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));
@@ -175,12 +178,15 @@ void retryTask(void* pvParameters) {
     ///////// A SOLUTION IS TO CHECK IF THE FILE STILL EXISTS ON THE SD CARD BEFORE ATTEMPTING TO SEND IT TO THE NETWORK QUEUE. IF IT DOESN'T EXIST, IT HAS BEEN ACKNOWLEDGED AND DELETED BY STATUS TASK, WE CAN SKIP IT AND MOVE ON TO THE NEXT FILE.
     ///////// PROBABLY USING AN ACK QUEUE from STATUS to RETRY task
     
+    ///// We can basically set a system state variable that a file is in transit to the cloud, and only when the status task confirms that it has been acknowledged and deleted, we can clear that state variable. This way, the retry task will not attempt to send the same file again until it has been acknowledged and deleted. This will prevent duplicate events from being sent to the network queue, for newly logged events that are still in transit to the cloud. We can use a simple Transmitting state for this purpose, and set it to Transmitting when a file is being sent to the network queue, and set it to Connected when the status task confirms that it has been acknowledged and deleted. This way, the retry task will only attempt to send files that are not currently in transit to the cloud, and will skip any files that are still being processed by the status task, just like Stop and Wait ARQ
+    ///// Also by doing this, we limit retries to not congest the network queue with duplicate events.
+    /// Also by doing this we give retry task lesser priority access to the network task than the main logging task
     while (1) {
         vTaskDelay(retryInterval);
         Serial.println("Retry Task");
 
-        if (state.LTE != SystemState::LTEState::Connected) {
-            Serial.println("LTE not connected, skipping retry");
+        if (state.LTE == SystemState::LTEState::Disconnected || state.LTE == SystemState::LTEState::Transmitting) {
+            Serial.println("LTE not connected, or currently transmitting skipping retry");
             continue;
         }
 

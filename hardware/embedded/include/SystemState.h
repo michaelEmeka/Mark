@@ -3,7 +3,8 @@
 struct SystemState {
   enum class LTEState {
       Connected,
-      Disconnected
+      Disconnected,
+      Transmitting
   };
 
   enum class FGPState {

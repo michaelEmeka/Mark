@@ -81,9 +81,10 @@ void setup() {
             ;
     }
 
-    DateTime local(__DATE__, __TIME__);
-    // DateTime utc = local - TimeSpan(3600); // Nigeria UTC+1
-    rtc.adjust(local);
+    if (rtc.lostPower()) {
+        Serial.println("RTC lost power, setting clock to compile time once");
+        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    }
 
     // -------------- Initializing SDC Reader
     if (!SD.begin()) {
