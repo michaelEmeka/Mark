@@ -1,3 +1,8 @@
+.auth-shell {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
 .auth-mark {
     width: 44px;
     height: 44px;
@@ -11,6 +16,28 @@
     font-size: 20px;
     color: #fff;
     margin-bottom: 18px;
+}
+
+.auth-form {
+    width: 100%;
+}
+
+.field-error {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #ef4444;
+}
+
+.field input.is-invalid,
+.field select.is-invalid {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.14);
+}
+
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
 }
 
 .auth-foot {

@@ -1,3 +1,58 @@
-/* Signup intentionally has no unique rules — it reuses .field, .field-row,
-   .btn and .topbar/.backbtn from styles/common.css. Kept as its own file
-   so every screen has a predictable, matching component + css pair. */
+.auth-shell {
+    max-width: 420px;
+    margin: 0 auto;
+}
+
+.auth-mark {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(155deg, var(--accent), #1E4FA8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 18px;
+}
+
+.auth-foot {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--text-faint);
+}
+
+.field-error {
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #ef4444;
+}
+
+.field input.is-invalid,
+.field select.is-invalid {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.14);
+}
+
+.form-error {
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #b91c1c;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.btn:disabled,
+.btn-primary:disabled {
+    background: #d6d3d1;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 1;
+}

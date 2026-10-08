@@ -1,22 +1,29 @@
 import "./ProfileScreen.css";
-import { EditIcon, SettingsIcon, AutomationIcon, LogoutIcon, ChevIcon } from "../components/icons";
-import type { Role } from "../types";
+import { EditIcon, SettingsIcon, LogoutIcon, ChevIcon } from "../components/icons";
+import type { User } from "../contexts/UserContext";
 
 interface ProfileScreenProps {
   active: boolean;
+  user: User | null;
   onEdit: () => void;
   onPreferences: () => void;
   onAutomation: () => void;
   onLogout: () => void;
 }
 
-export default function ProfileScreen({ active, onEdit, onPreferences, onAutomation, onLogout }: ProfileScreenProps) {
+export default function ProfileScreen({ active, user, onEdit, onPreferences, onLogout }: ProfileScreenProps) {
+  const initials = `${user?.firstname?.[0] ?? ""}${user?.lastname?.[0] ?? ""}`.toUpperCase();
+  const fullName = [user?.firstname, user?.lastname].filter(Boolean).join(" ") || "User";
+  const regNumber = user?.reg_number || "";
+  const level = user?.level_code ? `${user.level_code}L` : "";
+  const department = user?.department_name || "";
+
   return (
     <div className={`screen ${active ? "active" : ""}`}>
       <div className="profile-head">
-        <div className="profile-avatar">MO</div>
-        <div className="h2">Michael Onuekwusi</div>
-        <div className="profile-meta">EEE/2021/xxx · 400L · Electrical & Electronic Engineering</div>
+        <div className="profile-avatar">{initials || "U"}</div>
+        <div className="h2">{fullName}</div>
+        <div className="profile-meta">{[regNumber, level, department].filter(Boolean).join(" · ") || "Profile information pending"}</div>
         {/* {role === "courserep" && <div className="rep-chip">Course Representative</div>} */}
       </div>
 

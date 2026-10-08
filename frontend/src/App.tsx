@@ -9,7 +9,7 @@ export default function App() {
     <UserProvider>
       <Routes>
         <Route path="/" element={<DefaultPage />}></Route>
-        <Route path="/signup" element={<SignupPage />}></Route>
+        <Route path="/signup" element={<SignupPage onSignUp={() => {}} />}></Route>
         <Route path="/login" element={<LoginPage />}></Route>
       </Routes>
     </UserProvider>
