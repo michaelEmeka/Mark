@@ -8,7 +8,7 @@ class RabbitMQConsumer:
     def __init__(self):
         params = pika.ConnectionParameters(
             host=settings.RABBITMQ_HOST,
-            heartbeat=10,
+            heartbeat=60,
             credentials=pika.PlainCredentials(
                 username=settings.RABBITMQ_USERNAME,
                 password=settings.RABBITMQ_PASSWORD

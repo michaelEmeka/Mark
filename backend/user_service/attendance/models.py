@@ -13,7 +13,7 @@ class HardwareNode(models.Model):
     
 
 class FingerprintStamp(models.Model):
-    user = models.ForeignKey("users.User", on_delete=models.CASCADE, related_name="fingerprint_stamps")
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE, null=True, blank=True, related_name="fingerprint_stamps")
     hardware_node = models.ForeignKey(HardwareNode, on_delete=models.CASCADE, related_name="fingerprint_stamps")
     fingerprint_id = models.PositiveIntegerField()
 

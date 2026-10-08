@@ -231,9 +231,18 @@ def process_fingerprint_enrollment(device_name, data):
     """
 
     fingerprint_id = data.get("fingerprint_id")
+    timestamp = data.get("timestamp")
+    event_id = data.get("event_id")
+    event_type = data.get("event_type")
 
     if fingerprint_id is None:
-        print("Fingerprint enrollment has no fingerprint ID")
+        message = "Fingerprint enrollment has no fingerprint ID"
+        print(message)
+        process_fingerprint_status(device_name,
+                                   event_id,
+                                   event_type,
+                                   "ERROR",
+                                   message)
         return
 
     # Identify the hardware node
@@ -243,10 +252,15 @@ def process_fingerprint_enrollment(device_name, data):
             is_active=True,
         )
     except HardwareNode.DoesNotExist:
-        print(
+        message = (
             f"Unknown or inactive hardware node: "
             f"{device_name}"
         )
+        process_fingerprint_status(device_name,
+                                           event_id,
+                                           event_type,
+                                           "ERROR",
+                                           message)
         return
 
     # Create the fingerprint stamp.
@@ -263,15 +277,21 @@ def process_fingerprint_enrollment(device_name, data):
         )
 
     if created:
-        print(
+        message = (
             f"Fingerprint {fingerprint_id} registered "
             f"on {device_name}"
         )
     else:
-        print(
+        message = (
             f"Fingerprint {fingerprint_id} already "
             f"exists on {device_name}"
         )
+    process_fingerprint_status(device_name,
+                                       event_id,
+                                       event_type,
+                                       "ERROR",
+                                       message)
+    return
 
 
 def process_fingerprint_status(device_name, *data):

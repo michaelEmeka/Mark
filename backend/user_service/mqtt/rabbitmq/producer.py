@@ -4,13 +4,15 @@ import json
 
 import pika
 from django.conf import settings
+from pika.exceptions import AMQPError, NackError
 
 
 class RabbitMQProducer:
     def __init__(self):
         params = pika.ConnectionParameters(
             host=settings.RABBITMQ_HOST,
-            heartbeat=10,
+            heartbeat=60,
+            blocked_connection_timeout=300,
             credentials=pika.PlainCredentials(
                 username=settings.RABBITMQ_USERNAME,
                 password=settings.RABBITMQ_PASSWORD
@@ -23,7 +25,9 @@ class RabbitMQProducer:
         )
 
         self.channel = self.connection.channel()
-
+        
+        self.channel.confirm_delivery() #accepts ACKs or NACKs
+        
         self.channel.queue_declare(
             queue="mqtt_publish_queue",
             durable=True
@@ -41,12 +45,17 @@ class RabbitMQProducer:
         self.connection.close()
 
 def request_mqtt_publish(topic, payload):
-    producer = RabbitMQProducer()
+    global producer
+    message = {
+                "action": "publish",
+                "topic": topic,
+                "payload": payload
+                }
+    try:
+        producer.publish(message=message)
+        
+    except (AMQPError, NackError):
+        producer = RabbitMQProducer()
+        producer.publish(message=message)
 
-    producer.publish(
-        {
-            "action": "publish",
-            "topic": topic,
-            "payload": payload
-        }
-    )
+producer = RabbitMQProducer()

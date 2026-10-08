@@ -7,7 +7,7 @@ from .managers import CustomUserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    from entities.models import Department, Level, Set
+    from entities.models import University, School, Department, Level, Set
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
     username = models.CharField(max_length=255, blank=True, null=True, default="")
@@ -19,8 +19,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     reg_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
-    level = models.ForeignKey(Level, on_delete=models.CASCADE, null=True, blank=True)
+    university = models.ForeignKey(University, on_delete=models.CASCADE, null=False, blank=False)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=False, blank=False)
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=False, blank=False)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE, null=False, blank=False)
     set = models.ForeignKey("entities.Set", on_delete=models.CASCADE, null=True, blank=True)
     objects = CustomUserManager()
 
@@ -48,4 +50,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 #     user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
 #     machine = models.ForeignKey(HardwareNode, on_delete=models.SET_NULL)
 #     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+#     updated_at = models.DateTimeField(auto_now=True

@@ -32,22 +32,30 @@ class CreateUserView(GenericAPIView):
         if serializer.is_valid():
             user = serializer.save()
             return Response({"message": f"User {user.email} created successfully"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors)
+        print(serializer.errors)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class LoginUserView(APIView):
     def post(self, request):
+        email = (request.data.get("email") or "").strip().lower()
+        password = request.data.get("password") or ""
+
         try:
-            user = User.objects.get(email=request.data.get("email"))
-            password = request.data.get("password")
-            if user.check_password(password):
-                tokens = user.tokens()
-                return Response(
-                    tokens, status=status.HTTP_200_OK
-                )
-            else:
-                return Response({"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+            user = User.objects.get(email=email)
         except User.DoesNotExist:
-            return Response({"error": "Signup to create an account"})
+            return Response({"error": "Signup to create an account"}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.check_password(password):
+            tokens = user.tokens()
+            return Response(tokens, status=status.HTTP_200_OK)
+
+        if user.password == password:
+            user.set_password(password)
+            user.save(update_fields=["password"])
+            tokens = user.tokens()
+            return Response(tokens, status=status.HTTP_200_OK)
+
+        return Response({"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class LogoutUserView(GenericAPIView):
@@ -75,11 +83,16 @@ class UpdateUserView(GenericAPIView):
     queryset = User.objects.all()
 
     def patch(self, request):
-        serializer = self.get_serializer(request.user, data=request.data, context={"user": request.user})
+        serializer = self.get_serializer(
+            request.user,
+            data=request.data,
+            partial=True,
+            context={"user": request.user},
+        )
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
-            return Response({"message": f"User {user.email} updated successfully"}, status=status.HTTP_201_CREATED)
-        return Response({"message": f"Could not update User {instance.email}.."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"message": f"User {user.email} updated successfully"}, status=status.HTTP_200_OK)
+        return Response({"message": "Could not update user."}, status=status.HTTP_400_BAD_REQUEST)
 # class DeleteUserView(DestroyAPIView):
 #     queryset = User.objects.all()
 #     serializer_class = DeleteUserSerializer

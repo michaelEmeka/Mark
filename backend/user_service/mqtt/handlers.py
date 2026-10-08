@@ -3,6 +3,7 @@ import json
 from attendance.services.fingerprint_processor import (
     process_fingerprint_enrollment,
     process_fingerprint_scan,
+    process_mqtt_message
 )
 
 
@@ -39,12 +40,12 @@ def mqtt_message_handler(topic, payload):
     _, _, thing_name, message_type = topic_parts
 
     if message_type == "events":
-        process_fingerprint_scan(
+        process_mqtt_message(
             device_name=thing_name,
             data=data,
         )
 
-    elif message_type == "status":
+    elif message_type == "states":
         process_fingerprint_enrollment(
             device_name=thing_name,
             data=data,
@@ -81,6 +82,7 @@ def mqtt_event_handler(device_name, data):
     if (not timestamp or not isinstance(timestamp, str)):
         print("Invalid timestamp")
         return
+    
     
 def mqtt_status_handler(device_name, data):
     #process_device_status(device_name=device_name, data=data)

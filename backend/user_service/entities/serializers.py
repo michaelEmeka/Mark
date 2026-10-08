@@ -1,25 +1,104 @@
 from django.db import transaction
 from rest_framework import serializers
 
-from .models import Course, Timetable, TimetableEntry, TimetableEntrySchedule
+from .models import *
+
+class GetUniversitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = University
+        fields = [
+            "id",
+            "name",
+            "code",
+            "city",
+            "state",
+            "zip_code"
+        ]
+
+
+class GetSchoolsSerializer(serializers.ModelSerializer):
+    university_name = serializers.CharField(source="university.name", read_only=True)
+
+    class Meta:
+        model = School
+        fields = [
+            "id",
+            "name",
+            "code",
+            "university",
+            "university_name",
+        ]
+
+
+class GetDepartmentsSerializer(serializers.ModelSerializer):
+    school_name = serializers.CharField(source="school.name", read_only=True)
+    university_id = serializers.IntegerField(source="school.university_id", read_only=True)
+
+    class Meta:
+        model = Department
+        fields = [
+            "id",
+            "name",
+            "code",
+            "school",
+            "school_name",
+            "university_id",
+        ]
+
+
+class GetLevelsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Level
+        fields = [
+            "id",
+            "code",
+        ]
+
+
+class GetSetsSerializer(serializers.ModelSerializer):
+    department_name = serializers.CharField(source="department.name", read_only=True)
+    school_id = serializers.IntegerField(source="department.school_id", read_only=True)
+    university_id = serializers.IntegerField(source="department.school.university_id", read_only=True)
+
+    class Meta:
+        model = Set
+        fields = [
+            "id",
+            "start_year",
+            "end_year",
+            "department",
+            "department_name",
+            "school_id",
+            "university_id",
+        ]
 
 
 class GetTimetableEntryScheduleSerializer(serializers.ModelSerializer):
+    timetable_entry_id = serializers.IntegerField(source="timetable_entry.id", read_only=True)
     course_name = serializers.CharField(source="timetable_entry.course.name", read_only=True)
     course_code = serializers.CharField(source="timetable_entry.course.code", read_only=True)
+    day = serializers.CharField(source="timetable_entry.day", read_only=True)
+    start_time = serializers.TimeField(source="timetable_entry.start_time", read_only=True)
+    end_time = serializers.TimeField(source="timetable_entry.end_time", read_only=True)
     lecturer_name = serializers.CharField(source="lecturer.firstname", read_only=True)
     lecture_hall = serializers.CharField(source="hall.name", read_only=True)
+    is_one_time = serializers.BooleanField(source="timetable_entry.is_one_time", read_only=True)
 
     class Meta:
         model = TimetableEntrySchedule
         fields = [
             "id",
+            "timetable_entry_id",
             "course_name",
             "course_code",
             "date",
+            "day",
+            "start_time",
+            "end_time",
             "lecturer_name",
             "lecture_hall",
-            "attendance_taken"
+            "attendance_taken",
+            "is_one_time",
         ]
 
 class GetTimetableEntriesSerializer(serializers.ModelSerializer):
