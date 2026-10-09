@@ -99,7 +99,7 @@ bool publishEvent(EventRecord& rec) {
     char buffer[512];
     size_t n = serializeJson(doc, buffer, sizeof(buffer));
     (void)n;
-
+    
     if (client.publish(pubTopic, buffer)) {
         Serial.print("Published: ");
         Serial.println(buffer);

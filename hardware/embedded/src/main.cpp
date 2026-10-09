@@ -41,6 +41,15 @@ SystemState state{
 Configs configs;
 Nav nav;
 
+
+static bool initFingerprint(uint8_t attempts = 10, uint16_t gapMs = 300) {
+    for (uint8_t i = 0; i < attempts; i++) {
+        if (mFinger.verifyPassword()) return true;
+        Serial.printf("FP handshake fail %u/%u\n", i + 1, attempts);
+        delay(gapMs);
+    }
+    return false;
+}
 // ---------------- Setup / Loop ----------------
 void setup() {
     Wire.begin(Pins::I2C_SDA, Pins::I2C_SCL);
@@ -66,7 +75,7 @@ void setup() {
     alertDisplay("..init");
 
     // -------------- Initializing fingerprint sensor
-    if (mFinger.verifyPassword()) {
+    if (initFingerprint()) {
         Serial.println("Fingerprint sensor found!");
     } else {
         Serial.println("Fingerprint sensor NOT found!");

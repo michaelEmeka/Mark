@@ -170,7 +170,10 @@ void loggingTask(void* pvParameters) {
 
 void retryTask(void* pvParameters) {
     // const TickType_t retryInterval = pdMS_TO_TICKS(30000);
-    const TickType_t retryInterval = pdMS_TO_TICKS(5000);
+    const TickType_t retryInterval = pdMS_TO_TICKS(30000);
+    // Also this is good because if we don't get a status response back, we can assume that something is wrong,
+    // either the transmission is lost or the backend server is down
+    //.. great stuff. init.
 
     /////////
     //////// WE WANT TO CHECK EACH RETRIED FILE TRANSMIT FIRST IF IT STILL EXISTS ON THE SD CARD

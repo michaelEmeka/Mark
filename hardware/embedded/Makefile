@@ -8,4 +8,4 @@ compiledb:
 	pio run -t compiledb
 
 monitor:
-	pio device monitor
+	pio device monitor -f default
