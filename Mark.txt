@@ -6,7 +6,7 @@ Fingerprint: 16(RX), 17(TX) (5v)                                                
 OLED: G21(SDA); G22(SCL)                                                               | I2C
 RTC: G21(SDA); G22(SCL):                                                                | I2C
 SD-card: CS(G5), SCK(G18), MOSI(D23), MISO(D19), VCC, GND:         | SPI
-LTE: Rx(G26)-ESP_TX pin, Tx(G25), GND, V(Ccc)
+LTE: Rx(G26)-ESP_TX, Tx(G25), GND, V(Ccc)
 
 
 SDA, SCL: I2C
@@ -17,7 +17,7 @@ FINGERPRINT DEVICE FUNCTIONALITY:
 
 On power on:
 -Logo Display
--Hi, I'm Mark
+-Hi!
 -UI loads up: battery bar, network bar, date and time
 
 -Scan to take attendance (default function)

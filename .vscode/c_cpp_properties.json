@@ -1,25 +1,32 @@
 {
     "configurations": [
         {
-            "name": "Win32",
+            "name": "PlatformIO",
             "includePath": [
                 "${workspaceFolder}/**",
-                "c:/Users/USER/Documents/Mark/hardware/embedded/include",
-                "c:/Users/USER/Documents/Mark/**"
+                "${workspaceFolder}/hardware/embedded/include",
+                "${workspaceFolder}/hardware/embedded/src",
+                //"${workspaceFolder}/lib/**",
+                "C:/Users/USER/.platformio/packages/framework-arduinoespressif32/**",
+                "C:/Users/USER/.platformio/packages/toolchain-xtensa-esp32/**"
             ],
             "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
+                "ARDUINO=10819",
+                "ESP32",
+                "ESP_PLATFORM"
             ],
-            "compilerPath": "C:\\msys64\\ucrt64\\bin\\g++.exe",
-            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "C:/Users/USER/.platformio/packages/toolchain-xtensa-esp32/bin/xtensa-esp32-elf-g++.exe",
+            "intelliSenseMode": "gcc-x86",
             "cStandard": "c11",
             "cppStandard": "c++17",
             "browse": {
                 "path": [
                     "${workspaceFolder}",
-                    "c:/Users/USER/Documents/Mark/hardware/embedded/include"
+                    "${workspaceFolder}/hardware/embedded/include",
+                    "${workspaceFolder}/hardware/embedded/src",
+                    //"${workspaceFolder}/lib",
+                    "C:/Users/USER/.platformio/packages/framework-arduinoespressif32",
+                    "C:/Users/USER/.platformio/packages/toolchain-xtensa-esp32"
                 ],
                 "limitSymbolsToIncludedHeaders": true
             }
