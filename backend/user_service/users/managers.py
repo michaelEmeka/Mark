@@ -1,7 +1,11 @@
+import logging
+
 from django.contrib.auth.models import BaseUserManager
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
+
+logger = logging.getLogger(__name__)
 
 
 class CustomUserManager(BaseUserManager):
@@ -21,6 +25,22 @@ class CustomUserManager(BaseUserManager):
             
         extra_fields.setdefault("is_active", True)
         extra_fields.setdefault("is_verified", True)
+        
+        # If department is provided but school is not, infer school from department
+        dept = extra_fields.get("department")
+        if dept and not extra_fields.get("school"):
+            try:
+                extra_fields["school"] = dept.school
+            except AttributeError as exc:
+                logger.debug("Could not infer school from department: %s", exc)
+
+        # If school is provided but university is not, infer university from school
+        sch = extra_fields.get("school")
+        if sch and not extra_fields.get("university"):
+            try:
+                extra_fields["university"] = sch.university
+            except AttributeError as exc:
+                logger.debug("Could not infer university from school: %s", exc)
         
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
