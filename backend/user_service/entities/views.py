@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework.response import Response
+
 from users.models import User
 
 #from .serializers import UserSerializer
@@ -12,8 +13,7 @@ def resolve_user_set(user):
     if not user:
         return None
 
-    if user.set_id:
-        if (
+    if (user.set_id and
             user.set.department_id == user.department_id
             and user.set.department.school_id == user.school_id
             and user.set.department.school.university_id == user.university_id

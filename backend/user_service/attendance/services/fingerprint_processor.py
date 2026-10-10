@@ -231,7 +231,7 @@ def process_fingerprint_enrollment(device_name, data):
     """
 
     fingerprint_id = data.get("fingerprint_id")
-    timestamp = data.get("timestamp")
+    #timestamp = data.get("timestamp")
     event_id = data.get("event_id")
     event_type = data.get("event_type")
 

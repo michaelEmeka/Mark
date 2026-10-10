@@ -81,6 +81,7 @@ class AttendanceModelTests(TestCase):
             password="StrongPass123!",
             firstname="Grace",
             lastname="Hopper",
+            school=self.school,
             department=self.department,
             level=self.level,
             reg_number="CS-2024-001",
@@ -122,7 +123,7 @@ class AttendanceModelTests(TestCase):
 
         client = APIClient()
         client.force_authenticate(user=self.student)
-        response = client.get("/attendance/")
+        response = client.get("/api/v1/attendance/")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 1)

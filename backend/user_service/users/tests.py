@@ -4,7 +4,11 @@ from django.urls import reverse
 
 from entities.models import Department, Level, School, University
 from users.models import User
-from users.serializers import CreateUserSerializer, UpdateUserSerializer, UserDetailSerializer
+from users.serializers import (
+    CreateUserSerializer,
+    UpdateUserSerializer,
+    UserDetailSerializer,
+)
 
 
 class CreateUserSerializerTests(TestCase):

@@ -2,8 +2,7 @@ import json
 
 from attendance.services.fingerprint_processor import (
     process_fingerprint_enrollment,
-    process_fingerprint_scan,
-    process_mqtt_message
+    process_mqtt_message,
 )
 
 

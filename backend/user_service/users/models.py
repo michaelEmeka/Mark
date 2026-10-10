@@ -7,7 +7,7 @@ from .managers import CustomUserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    from entities.models import University, School, Department, Level, Set
+    from entities.models import Department, Level, School, Set, University
 
     email = models.EmailField(max_length=255, unique=True, blank=False, null=False)
     username = models.CharField(max_length=255, blank=True, null=True, default="")

@@ -10,7 +10,6 @@ class ListUsersSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "email", "username", "push_token", "preferences", "created_at"]
 
-from django.contrib.auth.models import Group
 from rest_framework import serializers
 
 from .models import User
