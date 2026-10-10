@@ -17,7 +17,7 @@ class ListUserAttendance(ListAPIView):
     serializer_class = ListUserAttendanceSerilaizer
 
     def get_queryset(self):
-        return Attendance.objects.filter(user=self.request.user)
+        return Attendance.objects.filter(user=self.request.user).order_by("-created_at")
 
 class CreateAttendance(APIView):
 
