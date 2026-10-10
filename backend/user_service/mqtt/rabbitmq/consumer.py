@@ -8,7 +8,7 @@ class RabbitMQConsumer:
     def __init__(self):
         params = pika.ConnectionParameters(
             host=settings.RABBITMQ_HOST,
-            heartbeat=60,
+            heartbeat=600,
             credentials=pika.PlainCredentials(
                 username=settings.RABBITMQ_USERNAME,
                 password=settings.RABBITMQ_PASSWORD
@@ -18,6 +18,7 @@ class RabbitMQConsumer:
             #pika.URLParameters(settings.RABBITMQ_URL)
             params
         )
+        
         self.channel = self.connection.channel()
         self.channel.queue_declare(
             queue="mqtt_publish_queue",

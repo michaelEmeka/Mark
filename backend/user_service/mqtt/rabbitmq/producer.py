@@ -11,7 +11,7 @@ class RabbitMQProducer:
     def __init__(self):
         params = pika.ConnectionParameters(
             host=settings.RABBITMQ_HOST,
-            heartbeat=60,
+            heartbeat=600,
             blocked_connection_timeout=300,
             credentials=pika.PlainCredentials(
                 username=settings.RABBITMQ_USERNAME,
