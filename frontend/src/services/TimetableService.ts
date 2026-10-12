@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = (import.meta as ImportMeta & { env?: { API_BASE_URL?: string } }).env?.API_BASE_URL || "http://3.15.234.174";
+const BASE_URL = (import.meta as ImportMeta & { env?: { API_BASE_URL?: string } }).env?.API_BASE_URL || "https://slacked-ranging-deport.ngrok-free.dev";
 
 export interface TimetableEntryApi {
   id: number;
