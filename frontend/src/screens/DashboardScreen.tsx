@@ -64,6 +64,57 @@ const buildWeekStrip = () => {
   });
 };
 
+const formatActivityTime = (value?: string) => {
+  if (!value) return "";
+  const text = value.trim();
+  if (!text) return "";
+
+  const normalized = text.includes(":") ? text : `${text.slice(0, 2)}:${text.slice(2)}`;
+  const [hours, minutes] = normalized.split(":");
+  if (!hours || !minutes) return normalized;
+
+  const hour = Number(hours);
+  const suffix = hour >= 12 ? "pm" : "am";
+  const displayHour = hour % 12 || 12;
+
+  return `${displayHour}:${minutes}${suffix}`;
+};
+
+const formatActivityDate = (dateTaken?: string) => {
+  if (!dateTaken) return "Recent";
+
+  const date = new Date(`${dateTaken}T00:00:00`);
+  if (Number.isNaN(date.getTime())) return dateTaken;
+
+  const today = new Date();
+  const todayStart = new Date(today); 
+  todayStart.setHours(0, 0, 0, 0);
+
+  const yesterday = new Date(todayStart);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const dateStart = new Date(date);
+  dateStart.setHours(0, 0, 0, 0);
+
+  if (dateStart.getTime() === todayStart.getTime()) return "Today";
+  if (dateStart.getTime() === yesterday.getTime()) return "Yesterday";
+
+  return new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(date);
+};
+
+const getActivityTimestamp = (record: UserAttendanceApi) => {
+  const timeValue = record.time_in ?? "";
+  if (!record.date_taken && !timeValue) return 0;
+
+  const normalizedTime = timeValue.includes(":")
+    ? timeValue
+    : `${timeValue.slice(0, 2)}:${timeValue.slice(2, 4)}:${timeValue.slice(4, 6) || "00"}`;
+
+  const iso = `${record.date_taken ?? "1970-01-01"}T${normalizedTime || "00:00:00"}`;
+  const parsed = new Date(iso);
+  return Number.isNaN(parsed.getTime()) ? 0 : parsed.getTime();
+};
+
 export default function DashboardScreen({ active }: DashboardScreenProps) {
   const context = useUserContext();
   const [entries, setEntries] = useState<TimetableEntryApi[]>([]);
@@ -111,6 +162,13 @@ export default function DashboardScreen({ active }: DashboardScreenProps) {
     if (!attendance.length) return 0;
     const present = attendance.filter((record) => record.is_present).length;
     return Math.round((present / attendance.length) * 100);
+  }, [attendance]);
+
+  const recentActivity = useMemo(() => {
+    return [...attendance]
+      .filter((record) => record.date_taken || record.time_in)
+      .sort((a, b) => getActivityTimestamp(b) - getActivityTimestamp(a))
+      .slice(0, 3);
   }, [attendance]);
 
   const todaysEntries = entries.filter((entry) => normalizeDay(entry.day) === todayLabel);
@@ -212,18 +270,29 @@ export default function DashboardScreen({ active }: DashboardScreenProps) {
         <div className="live-pill"><span className="live-dot" />Live</div>
       </div>
       <div className="activity-list">
-        <div className="activity-row">
-          <div className="act-icon ok"><CheckIcon /></div>
-          <div className="act-mid"><div className="act-course">Power Electronics</div><div className="act-when">Today, 8:04am · Attended</div></div>
-        </div>
-        <div className="activity-row">
-          <div className="act-icon miss"><MissIcon /></div>
-          <div className="act-mid"><div className="act-course">Digital Signal Processing</div><div className="act-when">Yesterday · Missed</div></div>
-        </div>
-        <div className="activity-row">
-          <div className="act-icon ok"><CheckIcon /></div>
-          <div className="act-mid"><div className="act-course">Control Systems</div><div className="act-when">Wed, 11:02am · Attended</div></div>
-        </div>
+        {recentActivity.length === 0 && (
+          <div className="tt-empty">No recent attendance found yet.</div>
+        )}
+
+        {recentActivity.map((record) => {
+          const isPresent = record.is_present;
+          const courseName = record.course?.name || record.course?.code || "Course";
+          const dayLabel = formatActivityDate(record.date_taken);
+          const timeLabel = formatActivityTime(record.time_in ?? "");
+          const summary = timeLabel ? `${dayLabel}, ${timeLabel} · ${isPresent ? "Attended" : "Missed"}` : `${dayLabel} · ${isPresent ? "Attended" : "Missed"}`;
+
+          return (
+            <div key={`${record.course?.code}-${record.date_taken ?? "unknown"}-${record.time_in ?? "unknown"}`} className="activity-row">
+              <div className={`act-icon ${isPresent ? "ok" : "miss"}`}>
+                {isPresent ? <CheckIcon /> : <MissIcon />}
+              </div>
+              <div className="act-mid">
+                <div className="act-course">{courseName}</div>
+                <div className="act-when">{summary}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

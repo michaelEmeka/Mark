@@ -193,7 +193,7 @@ export default function SignupPage({ onSignUp }: SignupScreenProps) {
 
   return (
     <div className="pad auth-shell" style={{ paddingTop: 60 }}>
-      <div className="auth-mark">M</div>
+      <div className="auth-mark">Fingerprint</div>
       <div className="h1">Create account</div>
       <div className="muted" style={{ marginTop: 4 }}>Same details, straight onto your dashboard</div>
       <div style={{ height: 20 }} />

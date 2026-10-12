@@ -92,7 +92,7 @@ export default function LoginPage() {
   return (
     <div className="pad auth-shell" style={{ paddingTop: 60 }}>
       {loading && <LoadingOverlay text="Signing in.."></LoadingOverlay>}
-      <div className="auth-mark">M</div>
+      <div className="auth-mark">Fingerprint</div>
       <div className="h1">Welcome back</div>
       <div className="muted" style={{ marginTop: 4 }}>Sign in with your school email</div>
       <div style={{ height: 26 }} />
