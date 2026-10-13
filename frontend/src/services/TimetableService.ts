@@ -2,6 +2,15 @@ import axios from "axios";
 
 const BASE_URL = (import.meta as ImportMeta & { env?: { API_BASE_URL?: string } }).env?.API_BASE_URL || "https://slacked-ranging-deport.ngrok-free.dev";
 
+
+
+const api = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        "ngrok-skip-browser-warning": "true",
+    },
+});
+
 export interface TimetableEntryApi {
   id: number;
   course_name: string;
@@ -49,7 +58,7 @@ async function fetchTimetableEntries(): Promise<TimetableEntryApi[]> {
   const endpoint = `${BASE_URL}/api/v1/entities/timetable/entries/`;
 
   try {
-    const response = await axios.get(endpoint, { headers: authHeaders() });
+    const response = await api.get(endpoint, { headers: authHeaders() });
     const payload = response.data?.TimetableEntries ?? response.data ?? [];
     return Array.isArray(payload) ? payload : [];
   } catch (error: any) {
@@ -62,7 +71,7 @@ async function fetchTimetableSchedules(): Promise<TimetableScheduleApi[]> {
   const endpoint = `${BASE_URL}/api/v1/entities/timetable/schedules/`;
 
   try {
-    const response = await axios.get(endpoint, { headers: authHeaders() });
+    const response = await api.get(endpoint, { headers: authHeaders() });
     const payload = response.data?.["TimetableEntries Schedules"] ?? response.data ?? [];
     return Array.isArray(payload) ? payload : [];
   } catch (error: any) {
@@ -75,7 +84,7 @@ async function fetchUserAttendance(): Promise<UserAttendanceApi[]> {
   const endpoint = `${BASE_URL}/api/v1/attendance/`;
 
   try {
-    const response = await axios.get(endpoint, { headers: authHeaders() });
+    const response = await api.get(endpoint, { headers: authHeaders() });
     const payload = response.data ?? [];
     return Array.isArray(payload) ? payload : [];
   } catch (error: any) {

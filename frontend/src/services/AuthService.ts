@@ -1,6 +1,13 @@
 import axios from "axios";
 const BASE_URL = (import.meta as ImportMeta & { env?: { API_BASE_URL?: string } }).env?.API_BASE_URL || "https://slacked-ranging-deport.ngrok-free.dev";
 
+const api = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        "ngrok-skip-browser-warning": "true",
+    },
+});
+
 interface LoginRequest {
     email: string;
     password: string;
@@ -25,7 +32,7 @@ async function logout() {
 
     if (refreshToken) {
         try {
-            await axios.post(
+            await api.post(
                 `${BASE_URL}/api/v1/user/logout/`,
                 { refresh: refreshToken },
                 {
@@ -47,7 +54,7 @@ async function logout() {
 async function Login({ email, password }: LoginRequest): Promise<LoginResponse> {
     const endpoint = `${BASE_URL}/api/v1/user/login/`;
     try {
-        const res = await axios.post(endpoint, { email, password });
+        const res = await api.post(endpoint, { email, password });
         localStorage.setItem("access", res.data.access);
         localStorage.setItem("refresh", res.data.refresh);
         console.log("Login successful:", res.data);
@@ -62,7 +69,7 @@ async function Login({ email, password }: LoginRequest): Promise<LoginResponse> 
 async function fetchUser() {
     const endpoint = `${BASE_URL}/api/v1/user/`;
     try {
-        const res = await axios.get(endpoint, {
+        const res = await api.get(endpoint, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access")}`
             }
@@ -78,7 +85,7 @@ async function fetchUser() {
 async function updateUser(payload: ProfileUpdateRequest) {
     const endpoint = `${BASE_URL}/api/v1/user/update/`;
     try {
-        const res = await axios.patch(endpoint, payload, {
+        const res = await api.patch(endpoint, payload, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access")}`
             }

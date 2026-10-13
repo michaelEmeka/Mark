@@ -2,6 +2,13 @@ import axios from "axios";
 
 const BASE_URL = (import.meta as ImportMeta & { env?: { API_BASE_URL?: string } }).env?.API_BASE_URL || "https://slacked-ranging-deport.ngrok-free.dev";
 
+const api = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        "ngrok-skip-browser-warning": "true",
+    },
+});
+
 export interface University {
   id: number | string;
   name: string;
@@ -62,7 +69,7 @@ async function fetchUnis(): Promise<University[]> {
   const endpoint = `${BASE_URL}/api/v1/entities/universities/`;
 
   try {
-    const response = await axios.get<University[]>(endpoint);
+    const response = await api.get<University[]>(endpoint);
     return response.data;
   } catch (error: any) {
     console.error("Fetch universities failed:", error.response?.data || error.message);
@@ -74,7 +81,7 @@ async function fetchSchools(universityId?: number | string): Promise<School[]> {
   const endpoint = `${BASE_URL}/api/v1/entities/schools/`;
 
   try {
-    const response = await axios.get<School[]>(endpoint, {
+    const response = await api.get<School[]>(endpoint, {
       params: universityId ? { university: universityId } : {},
     });
     return response.data;
@@ -88,7 +95,7 @@ async function fetchDepartments(schoolId?: number | string, universityId?: numbe
   const endpoint = `${BASE_URL}/api/v1/entities/departments/`;
 
   try {
-    const response = await axios.get<Department[]>(endpoint, {
+    const response = await api.get<Department[]>(endpoint, {
       params: schoolId ? { school: schoolId } : universityId ? { university: universityId } : {},
     });
     return response.data;
@@ -102,7 +109,7 @@ async function fetchLevels(): Promise<Level[]> {
   const endpoint = `${BASE_URL}/api/v1/entities/levels/`;
 
   try {
-    const response = await axios.get<Level[]>(endpoint);
+    const response = await api.get<Level[]>(endpoint);
     return response.data;
   } catch (error: any) {
     console.error("Fetch levels failed:", error.response?.data || error.message);
@@ -118,7 +125,7 @@ async function fetchSets(filters?: {
   const endpoint = `${BASE_URL}/api/v1/entities/sets/`;
 
   try {
-    const response = await axios.get<AcademicSet[]>(endpoint, {
+    const response = await api.get<AcademicSet[]>(endpoint, {
       params: {
         ...(filters?.departmentId ? { department: filters.departmentId } : {}),
         ...(filters?.schoolId ? { school: filters.schoolId } : {}),
@@ -136,7 +143,7 @@ async function createUser(payload: SignupRequest) {
   const endpoint = `${BASE_URL}/api/v1/user/signup/`;
 
   try {
-    const response = await axios.post(endpoint, payload);
+    const response = await api.post(endpoint, payload);
     return response.data;
   } catch (error: any) {
     console.error("Signup failed:", error.response?.data || error.message);
